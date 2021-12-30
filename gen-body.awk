@@ -8,15 +8,22 @@ BEGIN {
   print "  <link rel=\"stylesheet\" href=\"gallery.css\" />"
   print "</head>"
   print "<body>"
+  print "  <div class=\"navbar\" id=\"navbar\">"
+  print "    <div class=\"navbar-item\">Übersicht</div>"
+  print "    <div class=\"navbar-item\">Morgens</div>"
+  print "    <div class=\"navbar-item\">Mittags</div>"
+  print "    <div class=\"navbar-item\">Abends</div>"
+  print "    <div class=\"navbar-item\">Fotobox</div>"
+  print "  </div>"
+
   print "  <h1>Picture Gallery</h1>"
   print "  <div class=\"gallery\" id=\"gallery\">"
 
 }
 
 {
-  print "    <div class=\"gallery-item\">"
-  print "      <div class=\"content\"> <img src=\"img/"$0"\" alt=\""$0"\" onclick=\"window.open(this.src, '_blank');\" /> </div>"
-  print "    </div>"
+  # print "      <div class=\"content\"> <img src=\"img/"$0"\" alt=\""$0"\" onclick=\"window.open(this.src, '_blank');\" /> </div>"
+  print "    <div class=\"gallery-item\"> <img src=\"img/"$0"\" alt=\""$0"\" onclick=\"window.open(this.src, '_blank');\" /> </div>"
 }
 
 END {

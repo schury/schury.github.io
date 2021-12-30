@@ -1,5 +1,6 @@
 body {
   background-color: #eee;
+  padding: 0px 12px;
 }
 .gallery {
   display: grid;
@@ -7,6 +8,11 @@ body {
   grid-column-gap: 18px;
   grid-row-gap: 18px;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  padding-left: 10%;
+}
+h1 {
+  padding-left: 10%;
+  color: #FF8C00;
 }
 .gallery img {
   max-width: 100%;
@@ -16,16 +22,14 @@ body {
 }
 .gallery img:hover {
   transform: scale(1.08);
-  box-shadow: 0 0 32px #622;
-}
-.gallery .content {
-  padding: 8px;
+  box-shadow: 0 0 32px #FF8C00;
 }
 .gallery .gallery-item {
   transition: grid-row-start 300ms linear;
   transition: transform 300ms ease;
   transition: all 0.5s ease;
   cursor: pointer;
+  padding: 5px;
 }
 @media (max-width: 600px) {
   .gallery {
@@ -35,5 +39,33 @@ body {
 @media (max-width: 400px) {
   .gallery {
     grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
+  }
+}
+/* mobile default is left aligned */
+.navbar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: block;
+  width: 10%;
+  height: 100%; 
+  background-color: #FF8C00;
+  background: linear-gradient(90deg, #FF8C00 0%, #FF8C00 92%, rgba(0,0,0,0) 100%);
+  padding-left: 8px;
+  padding-top: 8px;
+}
+.navbar-item {
+  /* navbar items shown vertically on mobile */
+  display: block;
+}
+@media screen and (max-width: 600px) {
+  .navbar {
+    /* morphs to full width on top on screens larger than mobile */
+    height: 50px;
+    width: 100%;
+  }
+  .navbar-item {
+    /* Navbar items are now rendered side by side */
+    display: inline-block;
   }
 }
