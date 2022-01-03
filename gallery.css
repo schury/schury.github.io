@@ -1,5 +1,5 @@
 body {
-  background-color: #eee;
+  background-color: #eea;
   padding: 0px 12px;
 }
 .gallery {
@@ -31,16 +31,6 @@ h1 {
   cursor: pointer;
   padding: 5px;
 }
-@media (max-width: 600px) {
-  .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-  }
-}
-@media (max-width: 400px) {
-  .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
-  }
-}
 /* mobile default is left aligned */
 .navbar {
   position: fixed;
@@ -59,15 +49,21 @@ h1 {
 .navbar-item {
   /* navbar items shown vertically on mobile */
   display: block;
+  margin-bottom: 8px;
 }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 900px) {
   .navbar {
-    /* morphs to full width on top on screens larger than mobile */
-    height: 50px;
-    width: 100%;
+    width: 6%;
   }
   .navbar-item {
-    /* Navbar items are now rendered side by side */
-    display: inline-block;
+    writing-mode: vertical-lr; 
+    /* text-orientation: upright; */
+    margin-bottom: 18px;
+    transform : rotate(180deg);
+  }
+}
+@media (max-width: 400px) {
+  .gallery {
+    grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
   }
 }
