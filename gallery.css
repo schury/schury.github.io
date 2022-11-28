@@ -50,10 +50,12 @@ h1 {
   /* navbar items shown vertically on mobile */
   display: block;
   margin-bottom: 18px;
+  transition: all 5s ease-out;
 }
 .navbar-item:hover {
-  background-color: #eea;
   background: linear-gradient(90deg, #eea 0%, #FF8C00 92%, #eea 100%);
+  transition-property: background-color;
+  transition: background-color 5s;
 }
 @media screen and (max-width: 900px) {
   .navbar {
