@@ -73,3 +73,12 @@ h1 {
     grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
   }
 }
+tr, td {
+  padding: 2px 5px;
+}
+th:first-of-type {
+  text-align: center;
+}
+th {
+  text-align: left;
+}
