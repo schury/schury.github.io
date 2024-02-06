@@ -11,7 +11,7 @@ body {
   padding-left: 10%;
 }
 h1 {
-  padding-left: 10%;
+  padding-left: 2%;
   color: #FF8C00;
 }
 .gallery img {
@@ -75,10 +75,13 @@ h1 {
 }
 tr, td {
   padding: 1px 5px;
+  vertical-align: top;
 }
 th:first-of-type {
   text-align: center;
+  padding: 1px 5px;
 }
 th {
   text-align: left;
+  padding: 1px 5px;
 }
