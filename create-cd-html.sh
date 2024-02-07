@@ -7,8 +7,7 @@ num=0
 
 old_album=""
 
-print """
-<!DOCTYPE html>
+print """<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -19,8 +18,7 @@ print """
 <body>
 <table>
 <thead><tr><th>#</th><th>Artist</th><th>Album</th><th>Year</th></tr></thead>
-<tbody>
-"""
+<tbody>"""
 
 rm -f songs/*.html
 
