@@ -17,7 +17,6 @@ print """<!DOCTYPE html>
 </head>
 <body>
 <h1>CD list</h1>
-Created: $(date +%F)
 <table>
 <thead><tr><th>#</th><th>Artist</th><th>Album</th><th>Year</th></tr></thead>
 <tbody>"""
@@ -80,6 +79,8 @@ print """<!DOCTYPE html>
   then
     print "</tbody>"
     print "</table>"
+    print "<br/>"
+    print "Created: $(date +%F)"
     print "</body>"
     exit
   fi
@@ -87,17 +88,9 @@ print """<!DOCTYPE html>
 
 done
 
-print """
-</tbody>
+print """</tbody>
 </table>
-</body>
-"""
+<br/>
+Created: $(date +%F)
+</body>"""
 
-exit 
-      cp header songs/$num.html
-      echo "<body>" >> songs/$num.html
-      echo "<h1>$artist</h1>" >> songs/$num.html
-      echo "<h2>$album - $year</h2>" >> songs/$num.html
-      echo "<table>" >> songs/$num.html
-      echo "<thead><tr><th>#</th><th>Title</th></tr></thead>" >> songs/$num.html
-      echo "<tbody>" >> songs/$num.html
