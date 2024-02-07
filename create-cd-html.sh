@@ -28,17 +28,15 @@ do
   # get all the information from the current line
   # and separate into individual variables
   parts=(${(s:/:)i})
-  artist_year_album=${parts[1]}
-  songnr_title=${parts[2]}
+  artist_year_album=(${(s/[/)parts[1]})
+  songnr_title=(${(s/-/)parts[2]})
 
-  partsa=(${(s/[/)artist_year_album})
-  artist=${partsa[1]%???}
-  album=${partsa[2]#*]}
-  year=${partsa[2]:0:4}
+  artist=${artist_year_album[1]%???}
+  album=${artist_year_album[2]#*]}
+  year=${artist_year_album[2]:0:4}
 
-  partsb=(${(s/-/)songnr_title})
-  song_nr=$partsb[1]
-  song_title=$partsb[2]
+  song_nr=$songnr_title[1]
+  song_title=$songnr_title[2]
 
   if [[ $old_album == $album ]];
   then
