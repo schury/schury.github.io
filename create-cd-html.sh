@@ -12,10 +12,12 @@ print """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CD-Liste</title>
+  <title>CD list</title>
   <link rel="stylesheet" href="gallery.css">
 </head>
 <body>
+<h1>CD list</h1>
+Created: $(date +%F)
 <table>
 <thead><tr><th>#</th><th>Artist</th><th>Album</th><th>Year</th></tr></thead>
 <tbody>"""
