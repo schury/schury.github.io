@@ -24,13 +24,14 @@ print """<!DOCTYPE html>
 rm -f songs/*.html
 
 IFS=$'\n'
-for i in $(cat cd-list-raw)
+for i in $(cat cd-list-raw-length)
 do
   # get all the information from the current line
   # and separate into individual variables
   parts=(${(s:/:)i})
   artist_year_album=(${(s/[/)parts[1]})
   songnr_title=(${(s/-/)parts[2]})
+  length=$( date -d@$(( $parts[3] / 44100 )) -u +%M:%S  )
 
   artist=${artist_year_album[1]%???}
   album=${artist_year_album[2]#*]}
@@ -68,12 +69,12 @@ print """<!DOCTYPE html>
 <h1>$artist</h1>
 <h2>$album - $year</h2>
 <table>
-<thead><tr><th>#</th><th>Title</th></tr></thead>
+<thead><tr><th>#</th><th>Title</th><th>Length</th></tr></thead>
 <tbody> """
     } >> songs/$num.html
   fi
 
-  print "<tr><td>$song_nr</td><td>$song_title</td></tr>" >> songs/$num.html
+  print "<tr><td>$song_nr</td><td>$song_title</td><td>$length</td></tr>" >> songs/$num.html
 
   if [ $num -gt $max_cds_for_testing ]
   then
