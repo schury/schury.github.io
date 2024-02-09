@@ -77,6 +77,15 @@ tr, td {
   padding: 1px 5px;
   vertical-align: top;
 }
+td:last-of-type {
+  text-align: right;
+}
+tr.last {
+  padding: 1px 5px;
+  vertical-align: top;
+  text-align: right;
+  font-weight: bold;
+}
 th:first-of-type {
   text-align: center;
   padding: 1px 5px;
