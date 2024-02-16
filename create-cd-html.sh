@@ -4,6 +4,7 @@
 max_cds_for_testing=1000
 n=0
 num=0
+total_length=0
 
 old_album=""
 
@@ -32,6 +33,7 @@ do
   artist_year_album=(${(s/[/)parts[1]})
   songnr_title=(${(s/-/)parts[2]})
   length=$( date -d@$(( $parts[3] / 44100 )) -u +%M:%S  )
+  total_length=$(( $total_length + $parts[3] ))
 
   artist=${artist_year_album[1]%???}
   album=${artist_year_album[2]#*]}
@@ -46,9 +48,12 @@ do
   else
     if [[ $n -gt 0 ]];
     then
+      echo "<tr><td></td><td></td><td></tr>" >> songs/$num.html
+      echo "<tr class=\"last\"><td></td><td>Total:</td><td>$( date -d@$(( $total_length / 44100 )) -u +%M:%S  )</td></tr>" >> songs/$num.html
       echo "</tbody>"   >> songs/$num.html
       echo "</table>"   >> songs/$num.html
       echo "</body>" >> songs/$num.html
+      total_length=0
     fi
     (( n++ ))
     num=${(l(3)(0))n}
