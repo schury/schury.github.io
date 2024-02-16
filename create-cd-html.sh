@@ -66,12 +66,12 @@ do
 
     {
 print """<!DOCTYPE html>
-<html lang="en">
+<html lang=\"en\">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset=\"UTF-8\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
   <title>CD-Liste</title>
-  <link rel="stylesheet" href="../gallery.css">
+  <link rel=\"stylesheet\" href=\"../gallery.css\">
 </head>
 <body>
 <h1>$artist</h1>
