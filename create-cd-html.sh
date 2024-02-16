@@ -8,6 +8,7 @@ total_length=0
 
 old_album=""
 
+{
 print """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +22,7 @@ print """<!DOCTYPE html>
 <table>
 <thead><tr><th>#</th><th>Artist</th><th>Album</th><th>Year</th></tr></thead>
 <tbody>"""
+} > cds.html
 
 rm -f songs/*.html
 
@@ -59,7 +61,8 @@ do
     num=${(l(3)(0))n}
     # new album, so we print the album line
     old_album=$album
-    print "<tr><td>$num </td><td>$artist</td><td><a href=\"songs/$num.html\">$album</a></td><td> $year</td></tr>" 
+    print "<tr><td>$num </td><td>$artist</td><td><a href=\"songs/$num.html\">$album</a></td><td> $year</td></tr>" >> cds.html
+    print "$num -- $artist -- $album"
 
     {
 print """<!DOCTYPE html>
@@ -83,20 +86,23 @@ print """<!DOCTYPE html>
 
   if [ $num -gt $max_cds_for_testing ]
   then
+    {
     print "</tbody>"
     print "</table>"
     print "<br/>"
     print "Created: $(date +%F)"
     print "</body>"
+    } >> cds.html
     exit
   fi
 
 
 done
 
+{
 print """</tbody>
 </table>
 <br/>
 Created: $(date +%F)
 </body>"""
-
+} >> cds.html
