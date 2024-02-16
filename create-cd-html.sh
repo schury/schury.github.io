@@ -10,12 +10,12 @@ old_album=""
 
 {
 print """<!DOCTYPE html>
-<html lang="en">
+<html lang=\"en\">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset=\"UTF-8\">
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
   <title>CD list</title>
-  <link rel="stylesheet" href="gallery.css">
+  <link rel=\"stylesheet\" href=\"gallery.css\">
 </head>
 <body>
 <h1>CD list</h1>
@@ -89,7 +89,7 @@ print """<!DOCTYPE html>
     {
     print "</tbody>"
     print "</table>"
-    print "<br/>"
+    print "<br>"
     print "Created: $(date +%F)"
     print "</body>"
     } >> cds.html
@@ -102,7 +102,7 @@ done
 {
 print """</tbody>
 </table>
-<br/>
+<br>
 Created: $(date +%F)
 </body>"""
 } >> cds.html
