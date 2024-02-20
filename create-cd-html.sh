@@ -5,8 +5,7 @@ max_cds_for_testing=1000
 n=0
 num=0
 total_length=0
-
-old_album=""
+old_song_nr=""
 
 {
 print """<!DOCTYPE html>
@@ -35,7 +34,6 @@ do
   artist_year_album=(${(s/[/)parts[1]})
   songnr_title=(${(s/-/)parts[2]})
   length=$( date -d@$(( $parts[3] / 44100 )) -u +%M:%S  )
-  total_length=$(( $total_length + $parts[3] ))
 
   artist=${artist_year_album[1]%???}
   album=${artist_year_album[2]#*]}
@@ -44,26 +42,30 @@ do
   song_nr=$songnr_title[1]
   song_title=${(j:-:)songnr_title[2,-1]}
 
-  if [[ $old_album == $album ]];
+  if [[ $song_nr == "01 " ]];
   then
-    # we still have the same album
-  else
+    # we have a new album!
     if [[ $n -gt 0 ]];
-    then
+    then 
+      # finish the song from last time, with the old num
+      # PROBLEM: if album has only one song, we need to do something as well!
       echo "<tr><td></td><td></td><td></tr>" >> songs/$num.html
       # echo "<tr class=\"last\"><td></td><td>Total:</td><td>$( date -d@$(( $total_length / 44100 )) -u +%M:%S  )</td></tr>" >> songs/$num.html
       echo "<tr class=\"last\"><td></td><td>Total:</td><td>${(l(2)(0))$(( $total_length/(60*44100) ))}:${(l(2)(0))$(( ($total_length/44100)%60 ))}</td></tr>" >> songs/$num.html
       echo "</tbody>"   >> songs/$num.html
       echo "</table>"   >> songs/$num.html
       echo "</body>" >> songs/$num.html
-      total_length=0
     fi
+
+    # new album, new total length
+    total_length=$(( $parts[3] ))
+
+    # counter up for new album, initally this is 0
     (( n++ ))
     num=${(l(3)(0))n}
-    # new album, so we print the album line
-    old_album=$album
     print "<tr><td>$num </td><td>$artist</td><td><a href=\"songs/$num.html\">$album</a></td><td> $year</td></tr>" >> cds.html
     print "$num -- $artist -- $album"
+ 
 
     {
 print """<!DOCTYPE html>
@@ -81,8 +83,12 @@ print """<!DOCTYPE html>
 <thead><tr><th>#</th><th>Title</th><th>Length</th></tr></thead>
 <tbody> """
     } >> songs/$num.html
+  else
+    total_length=$(( $total_length + $parts[3] ))
   fi
 
+  # remember old song_nr
+  old_song_nr=$song_nr
   print "<tr><td>$song_nr</td><td>$song_title</td><td>$length</td></tr>" >> songs/$num.html
 
   if [ $num -gt $max_cds_for_testing ]
@@ -99,6 +105,12 @@ print """<!DOCTYPE html>
 
 
 done
+
+      echo "<tr><td></td><td></td><td></tr>" >> songs/$num.html
+      echo "<tr class=\"last\"><td></td><td>Total:</td><td>${(l(2)(0))$(( $total_length/(60*44100) ))}:${(l(2)(0))$(( ($total_length/44100)%60 ))}</td></tr>" >> songs/$num.html
+      echo "</tbody>"   >> songs/$num.html
+      echo "</table>"   >> songs/$num.html
+      echo "</body>" >> songs/$num.html
 
 {
 print """</tbody>
