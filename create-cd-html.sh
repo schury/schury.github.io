@@ -42,7 +42,7 @@ do
   year=${artist_year_album[2]:0:4}
 
   song_nr=$songnr_title[1]
-  song_title=$songnr_title[2]
+  song_title=${(j:-:)songnr_title[2,-1]}
 
   if [[ $old_album == $album ]];
   then
