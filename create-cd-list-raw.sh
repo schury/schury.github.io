@@ -1,5 +1,6 @@
 #!/usr/bin/zsh
 hostname=$(uname -n)
+last_letter=""
 
 if [[ $hostname == 'hel' ]];
 then
@@ -11,6 +12,13 @@ then
   do
     a=$( echo ${i%.flac} )
     r=$( grep -F $a $current_directory/cd-list-raw-length )
+    current_letter=$i[1,1]
+    if [[ $current_letter == $last_letter ]];
+    then
+    else
+      print $current_letter
+      last_letter=$current_letter
+    fi
     if [[ $r ]];
     then
       # print "found"

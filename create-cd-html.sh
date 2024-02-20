@@ -50,15 +50,14 @@ do
       # finish the song from last time, with the old num
       # PROBLEM: if album has only one song, we need to do something as well!
       echo "<tr><td></td><td></td><td></tr>" >> songs/$num.html
-      # echo "<tr class=\"last\"><td></td><td>Total:</td><td>$( date -d@$(( $total_length / 44100 )) -u +%M:%S  )</td></tr>" >> songs/$num.html
-      echo "<tr class=\"last\"><td></td><td>Total:</td><td>${(l(2)(0))$(( $total_length/(60*44100) ))}:${(l(2)(0))$(( ($total_length/44100)%60 ))}</td></tr>" >> songs/$num.html
+      echo "<tr class=\"last\"><td></td><td>Total:</td><td>${(l(2)(0))$(( $total_length/60 ))}:${(l(2)(0))$(( $total_length%60 ))}</td></tr>" >> songs/$num.html
       echo "</tbody>"   >> songs/$num.html
       echo "</table>"   >> songs/$num.html
       echo "</body>" >> songs/$num.html
     fi
 
     # new album, new total length
-    total_length=$(( $parts[3] ))
+    total_length=$(( $parts[3] / 44100 ))
 
     # counter up for new album, initally this is 0
     (( n++ ))
@@ -84,7 +83,7 @@ print """<!DOCTYPE html>
 <tbody> """
     } >> songs/$num.html
   else
-    total_length=$(( $total_length + $parts[3] ))
+    total_length=$(( $total_length + $parts[3] / 44100 ))
   fi
 
   # remember old song_nr
