@@ -2,8 +2,10 @@
 
 
 max_cds_for_testing=1000
-n=0
-num=0
+n_real=0
+num_real=0
+n_disp=0
+num_disp=0
 total_length=0
 old_song_nr=""
 
@@ -45,25 +47,34 @@ do
   if [[ $song_nr == "01 " ]];
   then
     # we have a new album!
-    if [[ $n -gt 0 ]];
+    if [[ $n_real -gt 0 ]];
     then 
       # finish the song from last time, with the old num
       # PROBLEM: if album has only one song, we need to do something as well!
-      echo "<tr><td></td><td></td><td></tr>" >> songs/$num.html
-      echo "<tr class=\"last\"><td></td><td>Total:</td><td>${(l(2)(0))$(( $total_length/60 ))}:${(l(2)(0))$(( $total_length%60 ))}</td></tr>" >> songs/$num.html
-      echo "</tbody>"   >> songs/$num.html
-      echo "</table>"   >> songs/$num.html
-      echo "</body>" >> songs/$num.html
+      {
+      echo "<tr><td></td><td></td><td></tr>"
+      echo "<tr class=\"last\"><td></td><td>Total:</td><td>${(l(2)(0))$(( $total_length/60 ))}:${(l(2)(0))$(( $total_length%60 ))}</td></tr>"
+      echo "</tbody>"
+      echo "</table>"
+      echo "</body>" 
+      } >> songs/$num_real.html
     fi
 
     # new album, new total length
     total_length=$(( $parts[3] / 44100 ))
 
+    (( n_real++ ))
+    num_real=${(l(3)(0))n_real}
     # counter up for new album, initally this is 0
-    (( n++ ))
-    num=${(l(3)(0))n}
-    print "<tr><td>$num </td><td>$artist</td><td><a href=\"songs/$num.html\">$album</a></td><td> $year</td></tr>" >> cds.html
-    print "$num -- $artist -- $album"
+    if [[ $album =~ "\(Bonus\)" || $album =~ "\(CD 2\)" || $album =~  "\(Bonus Instrumental\)"  ]];
+    then
+      print "<tr><td></td><td>$artist</td><td><a href=\"songs/$num_real.html\">$album</a></td><td> $year</td></tr>" >> cds.html
+    else
+      (( n_disp++ ))
+      num_disp=${(l(3)(0))n_disp}
+      print "<tr><td>$num_disp</td><td>$artist</td><td><a href=\"songs/$num_real.html\">$album</a></td><td> $year</td></tr>" >> cds.html
+    fi
+    print "$num_disp -- $artist -- $album"
  
 
     {
@@ -81,16 +92,16 @@ print """<!DOCTYPE html>
 <table>
 <thead><tr><th>#</th><th>Title</th><th>Length</th></tr></thead>
 <tbody> """
-    } >> songs/$num.html
+    } >> songs/$num_real.html
   else
     total_length=$(( $total_length + $parts[3] / 44100 ))
   fi
 
   # remember old song_nr
   old_song_nr=$song_nr
-  print "<tr><td>$song_nr</td><td>$song_title</td><td>$length</td></tr>" >> songs/$num.html
+  print "<tr><td>$song_nr</td><td>$song_title</td><td>$length</td></tr>" >> songs/$num_real.html
 
-  if [ $num -gt $max_cds_for_testing ]
+  if [ $num_real -gt $max_cds_for_testing ]
   then
     {
     print "</tbody>"
@@ -106,11 +117,13 @@ print """<!DOCTYPE html>
 done
 
 # finish the last song html file 
-echo "<tr><td></td><td></td><td></tr>" >> songs/$num.html
-echo "<tr class=\"last\"><td></td><td>Total:</td><td>${(l(2)(0))$(( $total_length/60 ))}:${(l(2)(0))$(( $total_length%60 ))}</td></tr>" >> songs/$num.html
-echo "</tbody>"   >> songs/$num.html
-echo "</table>"   >> songs/$num.html
-echo "</body>" >> songs/$num.html
+{
+echo "<tr><td></td><td></td><td></tr>"
+echo "<tr class=\"last\"><td></td><td>Total:</td><td>${(l(2)(0))$(( $total_length/60 ))}:${(l(2)(0))$(( $total_length%60 ))}</td></tr>"
+echo "</tbody>"
+echo "</table>"
+echo "</body>" 
+} >> songs/$num_real.html
 
 {
 print """</tbody>
