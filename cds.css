@@ -1,0 +1,37 @@
+body {
+  background-color: #000;
+  padding: 0px 12px;
+  color: #666;
+}
+a:link {
+  color: #888;
+}
+a:visited {
+  color: #444;
+}
+h1 {
+  padding-left: 2%;
+  color: #666;
+}
+tr, td {
+  padding: 1px 5px;
+  vertical-align: top;
+}
+td:last-of-type {
+  text-align: center;
+}
+tr.last {
+  padding: 1px 5px;
+  vertical-align: top;
+  text-align: right;
+  font-weight: bold;
+  border-top: 1px solid black;
+}
+th:first-of-type {
+  text-align: center;
+  padding: 1px 5px;
+}
+th {
+  text-align: left;
+  padding: 1px 5px;
+}

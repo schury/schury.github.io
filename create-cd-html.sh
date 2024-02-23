@@ -16,7 +16,7 @@ print """<!DOCTYPE html>
   <meta charset=\"UTF-8\">
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
   <title>CD list</title>
-  <link rel=\"stylesheet\" href=\"gallery.css\">
+  <link rel=\"stylesheet\" href=\"cds.css\">
 </head>
 <body>
 <h1>CD list</h1>
@@ -84,7 +84,7 @@ print """<!DOCTYPE html>
   <meta charset=\"UTF-8\">
   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
   <title>CD-Liste</title>
-  <link rel=\"stylesheet\" href=\"../gallery.css\">
+  <link rel=\"stylesheet\" href=\"../cds.css\">
 </head>
 <body>
 <h1>$artist</h1>
