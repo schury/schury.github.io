@@ -52,7 +52,6 @@ do
       # finish the song from last time, with the old num
       # PROBLEM: if album has only one song, we need to do something as well!
       {
-      echo "<tr><td></td><td></td><td></tr>"
       echo "<tr class=\"last\"><td></td><td>Total:</td><td>${(l(2)(0))$(( $total_length/60 ))}:${(l(2)(0))$(( $total_length%60 ))}</td></tr>"
       echo "</tbody>"
       echo "</table>"
@@ -118,7 +117,6 @@ done
 
 # finish the last song html file 
 {
-echo "<tr><td></td><td></td><td></tr>"
 echo "<tr class=\"last\"><td></td><td>Total:</td><td>${(l(2)(0))$(( $total_length/60 ))}:${(l(2)(0))$(( $total_length%60 ))}</td></tr>"
 echo "</tbody>"
 echo "</table>"

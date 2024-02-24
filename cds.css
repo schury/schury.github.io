@@ -20,13 +20,18 @@ tr, td {
 td:last-of-type {
   text-align: center;
 }
+tr:nth-child(even) {
+  background-color: #211;
+}
 tr.last {
   padding: 1px 5px;
-  vertical-align: top;
+  height: 144px;
+  vertical-align: bottom;
   text-align: right;
   font-weight: bold;
-  border-top: 1px solid black;
+  border-top: 3px solid black;
   color: #966;
+  background-color: #000;
 }
 th:first-of-type {
   text-align: center;
