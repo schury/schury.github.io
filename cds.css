@@ -1,17 +1,17 @@
 body {
   background-color: #000;
   padding: 0px 12px;
-  color: #888;
+  color: #BBB;
 }
 a:link {
-  color: #666;
+  color: #888;
 }
 a:visited {
-  color: #444;
+  color: #666;
 }
 h1 {
   padding-left: 2%;
-  color: #666;
+  color: #966;
 }
 tr, td {
   padding: 1px 5px;
@@ -26,6 +26,7 @@ tr.last {
   text-align: right;
   font-weight: bold;
   border-top: 1px solid black;
+  color: #966;
 }
 th:first-of-type {
   text-align: center;
@@ -34,4 +35,5 @@ th:first-of-type {
 th {
   text-align: left;
   padding: 1px 5px;
+  color: #966;
 }
