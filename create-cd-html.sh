@@ -7,7 +7,6 @@ num_real=0
 n_disp=0
 num_disp=0
 total_length=0
-old_song_nr=""
 
 {
 print """<!DOCTYPE html>
@@ -96,8 +95,6 @@ print """<!DOCTYPE html>
     total_length=$(( $total_length + $parts[3] / 44100 ))
   fi
 
-  # remember old song_nr
-  old_song_nr=$song_nr
   print "<tr><td>$song_nr</td><td>$song_title</td><td>$length</td></tr>" >> songs/$num_real.html
 
   if [ $num_real -gt $max_cds_for_testing ]
