@@ -12,12 +12,12 @@ song_list = []
 
 def write_cd_header(file):
   header = '''<!DOCTYPE html>
-<html lang=\"en\">
+<html lang="en">
 <head>
-  <meta charset=\"UTF-8\">
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CD list</title>
-  <link rel=\"stylesheet\" href=\"cds.css\">
+  <link rel="stylesheet" href=\"cds.css\">
 </head>
 <body>
 <h1>CD list</h1>
