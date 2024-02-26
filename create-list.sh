@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
-import platform
-import os
+import os, platform
 
 print(platform.node())
 
@@ -17,3 +16,9 @@ for f in files:
     for l in file:
         if "<h1>" in l:
           print(l.removeprefix("<h1>").removesuffix("</h1>\n"))
+
+infile = open("cd-list-raw-length")
+cd_list = infile.read()
+
+if "Zandelle" in cd_list:
+  print("yes")

@@ -1,3 +1,11 @@
+@font-face {
+  font-family: BlackDread;
+  src: url("./BlackDread.otf") format("opentype");
+}
+@font-face {
+  font-family: AbortedCorpse;
+  src: url("./AbortedCorpse.otf") format("opentype");
+}
 body {
   background-color: #000;
   padding: 0px 12px;
@@ -10,6 +18,7 @@ a:visited {
   color: #666;
 }
 h1 {
+  font-family: AbortedCorpse;
   padding-left: 2%;
   color: #966;
 }
