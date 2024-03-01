@@ -3,7 +3,7 @@
 import os, sys, glob
 
 flac_directory = "/home/fab/ogg/new"
-if not os.path.isdir("flac_directory"):
+if not os.path.isdir(flac_directory):
   print("flac directory not found - only works on hel")
   sys.exit()
 
