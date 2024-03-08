@@ -34,7 +34,6 @@ tr:nth-child(even) {
 }
 tr.last {
   padding: 1px 5px;
-  height: 144px;
   vertical-align: bottom;
   text-align: right;
   font-weight: bold;
@@ -50,4 +49,8 @@ th {
   text-align: left;
   padding: 1px 5px;
   color: #966;
+}
+img {
+  padding-top: 20px;
+  width: 400px;
 }

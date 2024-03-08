@@ -10,6 +10,8 @@ num_disp = 1
 album_l  = 0
 song_list = []
 
+covers_found = 0
+
 def write_cd_header(file):
   header = '''<!DOCTYPE html>
 <html lang="en">
@@ -30,6 +32,7 @@ def write_cd_header(file):
 
 
 def write_songs_to_file(num, artist, album, year, songs, album_length):
+  global covers_found
   header = '''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,6 +54,12 @@ def write_songs_to_file(num, artist, album, year, songs, album_length):
   outfile.write('\n<tr class="last"><td></td><td>Total:</td><td>' + album_length + '</td></tr>\n')
   outfile.write('</tbody>\n')
   outfile.write('</table>\n')
+  # check for album art and add if available
+  art_filename = 'albumart/' + artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
+  # print(art_filename)
+  if os.path.isfile(art_filename):
+    outfile.write('<img src="../' + art_filename + '" alt="cover not found" />\n')
+    covers_found += 1
   outfile.write('</body>\n')
 
 outfilename = "cds.html"
@@ -107,3 +116,5 @@ write_songs_to_file(f'{num_real:03}', artist, album, year, song_list, f'{int(alb
 outfile.write('</tbody>\n</table>\n<br>\n')
 outfile.write('Created: ' + str(date.today()) + '\n')
 outfile.write('</body>\n')
+
+print('found ' + str(covers_found) + ' covers')
