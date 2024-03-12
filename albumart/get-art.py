@@ -21,6 +21,35 @@ def download_and_save_art(rg_id):
 
 relgroup_id = '0519b1bf-c443-3110-8fb0-6fbbf8f3862b'
 
+
+# use cd-list-raw-length as input for getting artist and album
+cdlistcontent = '' 
+with open('../cd-list-raw-length') as cdlist:
+  cdlistcontent = cdlist.read()
+
+lastline = ''
+cdlist = []
+for line in cdlistcontent.splitlines():
+  l = line.split('/')[0]
+  l = l.replace(' (Bonus)', '')
+  l = l.replace(' (Bonus Instrumental)', '')
+  l = l.replace(' (CD 1)', '')
+  l = l.replace(' (CD 2)', '')
+  if l == lastline:
+    continue
+  lastline = l
+  cdlist.append(l)
+
+
+for cd in cdlist:
+  artist = cd.split(' - ')[0]
+  album =  ' '.join(cd.split(']')[1:]).strip()
+  print(artist + ' --- ' + album)
+  
+
+
+sys.exit()
+
 artist = 'bolt+thrower+honour+-+valour+-+pride'
 with urllib.request.urlopen('https://musicbrainz.org/search?query=' + artist + '&type=artist&limit=1&method=indexed') as artist_list:
   html_artist = str(artist_list.read()).split('\"')
