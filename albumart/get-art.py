@@ -22,44 +22,58 @@ def download_and_save_art(rg_id):
 relgroup_id = '0519b1bf-c443-3110-8fb0-6fbbf8f3862b'
 
 
-# use cd-list-raw-length as input for getting artist and album
-cdlistcontent = '' 
-with open('../cd-list-raw-length') as cdlist:
-  cdlistcontent = cdlist.read()
+def get_cd_list():
+  # use cd-list-raw-length as input for getting artist and album
+  cdlistcontent = '' 
+  with open('../cd-list-raw-length') as cdlist:
+    cdlistcontent = cdlist.read()
 
-lastline = ''
-cdlist = []
-for line in cdlistcontent.splitlines():
-  l = line.split('/')[0]
-  l = l.replace(' (Bonus)', '')
-  l = l.replace(' (Bonus Instrumental)', '')
-  l = l.replace(' (CD 1)', '')
-  l = l.replace(' (CD 2)', '')
-  if l == lastline:
-    continue
-  lastline = l
-  cdlist.append(l)
+  lastline = ''
+  cdlist = []
+  for line in cdlistcontent.splitlines():
+    l = line.split('/')[0]
+    l = l.replace(' (Bonus)', '')
+    l = l.replace(' (Bonus Instrumental)', '')
+    l = l.replace(' (CD 1)', '')
+    l = l.replace(' (CD 2)', '')
+    if l == lastline:
+      continue
+    lastline = l
+    cdlist.append(l.lower())
+
+  return cdlist
 
 
+
+cdlist = get_cd_list()
 for cd in cdlist:
   artist = cd.split(' - ')[0]
   album =  ' '.join(cd.split(']')[1:]).strip()
-  print(artist + ' --- ' + album)
+  searchstring = artist.replace(' ', '+') + '+' + album.replace(' ', '+')
   
 
 
-sys.exit()
 
-artist = 'bolt+thrower+honour+-+valour+-+pride'
-with urllib.request.urlopen('https://musicbrainz.org/search?query=' + artist + '&type=artist&limit=1&method=indexed') as artist_list:
+searchstring = 'bolt+thrower'
+with urllib.request.urlopen('https://musicbrainz.org/search?query=' + searchstring + '&type=artist&limit=1&method=indexed') as artist_list:
   html_artist = str(artist_list.read()).split('\"')
   for h in html_artist: 
     if '/artist/' in h:
       artist_id = (h.split('/')[2])
       # print(artist_id)
+      temp = ''
       with urllib.request.urlopen('https://musicbrainz.org/artist/' + artist_id) as cd_list:
         html_cds = str(cd_list.read()).split('\"')
+        print_next = False
         for c in html_cds:
-          if ('/release-group/' in c or 'bdi' in c) and not ('http' in c):
-            print(c)
+          if print_next:
+            print_next = False
+            s = c.replace('><bdi>', '')
+            s = s[0:s.find('<')]
+            print(temp + ' ' + s)
+            temp = ''
+          if ('/release-group/' in c) and not ('http' in c):
+            temp = c
+            print_next = True
+          
 
