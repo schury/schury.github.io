@@ -61,6 +61,7 @@ for cd in cdlist:
       first = False
     old_artist = artist
     searchstring = artist.replace(' ', '+')
+    searchstring = artist.replace('ö', 'o')
     with urllib.request.urlopen('https://musicbrainz.org/search?query=' + searchstring + '&type=artist&limit=1&method=indexed') as artist_list:
       html_artist = str(artist_list.read()).split('\"')
       for h in html_artist: 
