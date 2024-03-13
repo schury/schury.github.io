@@ -88,17 +88,23 @@ for cd in cdlist:
 
     # print(artist_cd_list)
 
+  album_found = False
   for c in artist_cd_list:
     if album in c:
       # print('found album ' + album + ' of artist ' + artist + ' in cd-list!')
       filename = artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
       rg_id = c.split()[0]
       print(rg_id + ' ----- ' + filename)
+      album_found = True
       if not os.path.isfile(filename):
         print(' downloading file...')
         download_and_save_art(rg_id, filename)
       else:
         print(' file already downloaded, skipping!')
+
+
+  if not album_found:
+    print('    -----> ' + artist + ' ' + album + ' not found')
 
           
 
