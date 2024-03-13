@@ -57,7 +57,8 @@ for cd in cdlist:
     if first: 
       first = False
     else:
-      sys.exit()
+      # sys.exit()
+      first = False
     old_artist = artist
     searchstring = artist.replace(' ', '+')
     with urllib.request.urlopen('https://musicbrainz.org/search?query=' + searchstring + '&type=artist&limit=1&method=indexed') as artist_list:
@@ -94,6 +95,7 @@ for cd in cdlist:
       rg_id = c.split()[0]
       print(rg_id + ' ----- ' + filename)
       if not os.path.isfile(filename):
+        print(' downloading file...')
         download_and_save_art(rg_id, filename)
       else:
         print(' file already downloaded, skipping!')
