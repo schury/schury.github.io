@@ -58,6 +58,12 @@ for cd in cdlist:
   artist = cd.split(' - ')[0].lower()
   album =  ' '.join(cd.split(']')[1:]).strip()
 
+  filename = artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
+
+  if os.path.isfile(filename):
+    print(filename + ' already downloaded, skipping!')
+    continue
+
   if artist != old_artist:
     if first: 
       first = False
@@ -95,21 +101,15 @@ for cd in cdlist:
 
   # should check the file on the disk first, only then try to download again!
   album_found = False
-  filename = artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
-  if not os.path.isfile(filename):
-    for c in artist_cd_list:
-      if album in c:
-        # print('found album ' + album + ' of artist ' + artist + ' in cd-list!')
-        rg_id = c.split()[0]
-        print(rg_id + ' ----- ' + filename)
-        album_found = True
-        if not os.path.isfile(filename):
-          print(' downloading file...')
-          download_and_save_art(rg_id, filename, notfound)
-  else:
-    print(filename + ' already downloaded, skipping!')
-    album_found = True
-
+  for c in artist_cd_list:
+    if album in c:
+      # print('found album ' + album + ' of artist ' + artist + ' in cd-list!')
+      rg_id = c.split()[0]
+      print(rg_id + ' ----- ' + filename)
+      album_found = True
+      if not os.path.isfile(filename):
+        print(' downloading file...')
+        download_and_save_art(rg_id, filename, notfound)
 
   if not album_found:
     print('    -----> ' + artist + ' ' + album + ' not found')
