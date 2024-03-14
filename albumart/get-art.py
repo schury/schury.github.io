@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import urllib.request, sys, os
+from urllib.error import HTTPError, URLError
 
 from PIL import Image
 import PIL
@@ -10,14 +11,18 @@ import PIL
 
 # save a image using extension
 # im1 = im1.save("geeks.jpg")
-def download_and_save_art(rg_id, filename):
+def download_and_save_art(rg_id, filename, notfound):
   url = 'https://coverartarchive.org' + rg_id + '/front'
 
-  with urllib.request.urlopen(url) as img:
-    print(img)
-    with open(filename, 'wb') as outfile:
-      outfile.write(img.read())
-    # bla = Image(img).save('test.jpg')
+  try:
+    with urllib.request.urlopen(url) as img:
+      # print(img)
+      with open(filename, 'wb') as outfile:
+        outfile.write(img.read())
+      # bla = Image(img).save('test.jpg')
+  except HTTPError as error:
+    print('no image file')
+    notfound.write(filename + '\n')
 
 relgroup_id = '0519b1bf-c443-3110-8fb0-6fbbf8f3862b'
 
@@ -44,7 +49,7 @@ def get_cd_list():
   return cdlist
 
 
-
+notfound = open('notfound', 'w')
 cdlist = get_cd_list()
 old_artist = ''
 artist_cd_list = []
@@ -88,23 +93,25 @@ for cd in cdlist:
 
     # print(artist_cd_list)
 
+  # should check the file on the disk first, only then try to download again!
   album_found = False
-  for c in artist_cd_list:
-    if album in c:
-      # print('found album ' + album + ' of artist ' + artist + ' in cd-list!')
-      filename = artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
-      rg_id = c.split()[0]
-      print(rg_id + ' ----- ' + filename)
-      album_found = True
-      if not os.path.isfile(filename):
-        print(' downloading file...')
-        download_and_save_art(rg_id, filename)
-      else:
-        print(' file already downloaded, skipping!')
+  filename = artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
+  if not os.path.isfile(filename):
+    for c in artist_cd_list:
+      if album in c:
+        # print('found album ' + album + ' of artist ' + artist + ' in cd-list!')
+        rg_id = c.split()[0]
+        print(rg_id + ' ----- ' + filename)
+        album_found = True
+        if not os.path.isfile(filename):
+          print(' downloading file...')
+          download_and_save_art(rg_id, filename, notfound)
+  else:
+    print(filename + ' already downloaded, skipping!')
+    album_found = True
 
 
   if not album_found:
     print('    -----> ' + artist + ' ' + album + ' not found')
-
-          
+    notfound.write(artist.title() + ' ' + album + '\n')
 
