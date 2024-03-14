@@ -1,4 +1,8 @@
 #!/usr/bin/zsh
 
-convert -scale 800x800 $1 ${1}a
-mv ${1}a $1
+for i in $(find . -size +1200k)
+do
+  print $i
+  convert -scale 800x800 -quality 85 $i ${i}a
+  mv ${i}a $i
+done
