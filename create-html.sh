@@ -56,10 +56,13 @@ def write_songs_to_file(num, artist, album, year, songs, album_length):
   outfile.write('</table>\n')
   # check for album art and add if available
   art_filename = 'albumart/' + artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
+  art_filename = art_filename.replace('_(bonus)', '').replace('_(bonus_instrumental)', '')
   # print(art_filename)
   if os.path.isfile(art_filename):
     outfile.write('<img src="../' + art_filename + '" alt="cover not found" />\n')
     covers_found += 1
+  else:
+    print(art_filename + ' cover not found')
   outfile.write('</body>\n')
 
 outfilename = "cds.html"

@@ -61,7 +61,7 @@ for cd in cdlist:
   filename = artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
 
   if os.path.isfile(filename):
-    print(filename + ' already downloaded, skipping!')
+    # print(filename + ' already downloaded, skipping!')
     continue
 
   if artist != old_artist:
