@@ -43,6 +43,8 @@ def get_cd_list():
     # l = l.replace(' (CD 2)', '')
     if l == lastline:
       continue
+    if '(Bonus)' in l:
+      continue
     lastline = l
     cdlist.append(l)
 
