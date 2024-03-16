@@ -37,10 +37,10 @@ def get_cd_list():
   cdlist = []
   for line in cdlistcontent.splitlines():
     l = line.split('/')[0]
-    l = l.replace(' (Bonus)', '')
-    l = l.replace(' (Bonus Instrumental)', '')
-    l = l.replace(' (CD 1)', '')
-    l = l.replace(' (CD 2)', '')
+    # l = l.replace(' (Bonus)', '')
+    # l = l.replace(' (Bonus Instrumental)', '')
+    # l = l.replace(' (CD 1)', '')
+    # l = l.replace(' (CD 2)', '')
     if l == lastline:
       continue
     lastline = l
