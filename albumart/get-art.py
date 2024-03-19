@@ -60,6 +60,8 @@ with urllib.request.urlopen('https://musicbrainz.org/search?query=' + searchstri
             s = s[0:s.find('<')]
             s = s.replace('\\xe2\\x80\\xa6', '...')
             s = s.replace('\\xe2\\x80\\x93', '-')
+            s = s.replace('\\303\\244', 'ä')
+            s = s.replace('\\303\\266', 'ö')
             s = s.replace('\\xc3\\xbc', 'ü')
             artist_cd_list.append(temp + ' ' + s.lower())
             temp = ''
