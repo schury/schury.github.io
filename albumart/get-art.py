@@ -29,8 +29,8 @@ if len(sys.argv) < 3:
   print('not enough arguments')
   sys.exit()
 
-artist = sys.argv[1]
-album  = sys.argv[2]
+artist = sys.argv[1].lower()
+album  = sys.argv[2].lower()
 
 #artist = 'Witchery'
 #album =  'Nightside'
@@ -60,7 +60,8 @@ with urllib.request.urlopen('https://musicbrainz.org/search?query=' + searchstri
             s = s[0:s.find('<')]
             s = s.replace('\\xe2\\x80\\xa6', '...')
             s = s.replace('\\xe2\\x80\\x93', '-')
-            artist_cd_list.append(temp + ' ' + s.title())
+            s = s.replace('\\xc3\\xbc', 'ü')
+            artist_cd_list.append(temp + ' ' + s.lower())
             temp = ''
           if ('/release-group/' in c) and not ('http' in c):
             temp = c
@@ -68,13 +69,13 @@ with urllib.request.urlopen('https://musicbrainz.org/search?query=' + searchstri
 
 
 
-  # print(artist_cd_list)
+print(artist_cd_list)
 
 # should check the file on the disk first, only then try to download again!
 album_found = False
 for c in artist_cd_list:
   if album in c:
-    # print('found album ' + album + ' of artist ' + artist + ' in cd-list!')
+    print('found album ' + album + ' of artist ' + artist + ' in cd-list!')
     rg_id = c.split()[0]
     print(rg_id + ' ----- ' + filename)
     album_found = True
