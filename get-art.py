@@ -35,7 +35,7 @@ album  = sys.argv[2].lower()
 #artist = 'Witchery'
 #album =  'Nightside'
 
-filename = artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
+filename = 'albumart/' + artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
 
 if os.path.isfile(filename):
   print(filename + ' already downloaded, skipping!')
