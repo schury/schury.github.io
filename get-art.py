@@ -66,6 +66,7 @@ with urllib.request.urlopen('https://musicbrainz.org/search?query=' + searchstri
             s = s.replace('\\xc3\\xb6', 'ö')
             s = s.replace('\\xc3\\xbc', 'ü')
             s = s.replace('&amp;', '&')
+            s = s.replace('&#x27;', "'")
             s = s.replace('\\xe2\\x80\\x99' , "’")
             artist_cd_list.append(temp + ' ' + s.lower())
             temp = ''
