@@ -290,7 +290,7 @@ def query_cddb_and_select_result(disc_id):
       break
     l = l + 1
   if len(lines) > 2:
-    val = int(input("Choose entry: ") or "0")
+    val = int(input("Choose entry: ") or "0") - 1
     #print("You selected entry number " + str(val))
     cddb_read = cddb_results[val]
 
