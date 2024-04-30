@@ -76,7 +76,7 @@ def write_songs_to_file(num, artist, album, year, songs, album_length):
   <link rel="stylesheet" href="../cds.css">
 </head>
 <body>
-'''
+'''.replace('CD-Liste', artist)
   outfile = open('songs/' + num + '.html', "w")
   outfile.write(header)
   outfile.write('<h1>' + artist + '</h1>\n')
