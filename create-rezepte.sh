@@ -3,9 +3,6 @@
 import os, sys
 from datetime import date
 
-
-
-
 main_header = '''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,12 +26,16 @@ rez_header = '''<!DOCTYPE html>
 <body>
 '''
 
-def print_recipe(title, zutaten, zubereitung):
-  print(rez_header.replace('TITLE', title))
-  print('Zutaten')
-  print(zutaten)
-  print('Zubereitung')
-  print(zubereitung)
+def print_recipe(title, zutaten, zubereitung, num):
+  out = open('rezepte/' + num + '.html', 'w')
+  out.write(rez_header.replace('TITLE', title))
+  out.write('<h2>Zutaten</h2>\n<ul>\n')
+  for l in zutaten:
+    out.write('<li>' + l + '</li>\n')
+  out.write('</ul>\n<h2>Zubereitung</h2>\n<ul>\n')
+  for l in zubereitung:
+    out.write('<li>' + l + '</li>\n')
+  out.write('<ul>\n</body>\n')
 
 def write_recipe_headers(out, recipe_html):
   out.write('<ul>\n')
@@ -45,6 +46,7 @@ def write_recipe_headers(out, recipe_html):
 title = ''
 zutaten = []
 zubereitung = []
+rez_num = 0
 
 infiles = ['rezepte/hauptgerichte.txt', 'rezepte/nachspeisen.txt']
 
@@ -68,7 +70,8 @@ for infile in infiles:
     if line == 'REZEPT':
       newrecipe = True
       if title != '':
-        print_recipe(title, zutaten, zubereitung)
+        rez_num += 1
+        print_recipe(title, zutaten, zubereitung, f'{rez_num:03}')
         recipe_html.append(title)
         title = ''
         zutaten = []
@@ -89,7 +92,8 @@ for infile in infiles:
     if mode == 'Zubereitung':
       zubereitung.append(line)
    
-  print_recipe(title, zutaten, zubereitung)
+  rez_num += 1
+  print_recipe(title, zutaten, zubereitung, f'{rez_num:03}')
   recipe_html.append(title)
   title = ''
   zutaten = []
@@ -97,4 +101,5 @@ for infile in infiles:
   write_recipe_headers(rez_html_out, recipe_html)
   recipe_html = []
 
+rez_html_out.write('Stand: ' + str(date.today()) + '\n')
 rez_html_out.write('</body>')
