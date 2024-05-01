@@ -28,6 +28,13 @@ rez_header = '''<!DOCTYPE html>
 <body>
 '''
 
+def print_recipe(title, zutaten, zubereitung):
+  print(rez_header.replace('TITLE', title))
+  print('Zutaten')
+  print(zutaten)
+  print('Zubereitung')
+  print(zubereitung)
+
 title = ''
 zutaten = []
 zubereitung = []
@@ -36,6 +43,7 @@ infiles = ['rezepte/hauptgerichte.txt', 'rezepte/nachspeisen.txt']
 
 mode = 'zutaten'
 newrecipe = False
+recipe_html = []
 
 for infile in infiles:
   ff = open(infile)
@@ -45,12 +53,13 @@ for infile in infiles:
   if 'nachspeisen' in infile:
     print('Nachspeisen')
   for line in contents.split('\n'):
+    if line == '':
+      continue
     if line == 'REZEPT':
       newrecipe = True
       if title != '':
-        print(title)
-        print(zutaten)
-        print(zubereitung)
+        print_recipe(title, zutaten, zubereitung)
+        recipe_html.append(title)
         title = ''
         zutaten = []
         zubereitung = []
@@ -70,9 +79,11 @@ for infile in infiles:
     if mode == 'Zubereitung':
       zubereitung.append(line)
    
-  print(title)
-  print(zutaten)
-  print(zubereitung)
+  print_recipe(title, zutaten, zubereitung)
+  recipe_html.append(title)
   title = ''
   zutaten = []
   zubereitung = []
+  print(recipe_html)
+  recipe_html = []
+
