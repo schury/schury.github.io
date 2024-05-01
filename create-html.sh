@@ -19,7 +19,7 @@ def write_cd_header(file):
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CD list</title>
-  <link rel="stylesheet" href=\"cds.css\">
+  <link rel="stylesheet" href=\"css/cds.css\">
 </head>
 <body>
 <h1>CD list</h1>
@@ -39,7 +39,7 @@ def write_songs_to_file(num, artist, album, year, songs, album_length):
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CD-Liste</title>
-  <link rel="stylesheet" href="../cds.css">
+  <link rel="stylesheet" href="../css/cds.css">
 </head>
 <body>
 '''.replace('CD-Liste', album)
