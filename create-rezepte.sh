@@ -15,6 +15,7 @@ main_header = '''<!DOCTYPE html>
   <link rel="stylesheet" href=\"css/rezepte.css\">
 </head>
 <body>
+<h1>Rezepte</h1>
 '''
 
 rez_header = '''<!DOCTYPE html>
@@ -35,6 +36,12 @@ def print_recipe(title, zutaten, zubereitung):
   print('Zubereitung')
   print(zubereitung)
 
+def write_recipe_headers(out, recipe_html):
+  out.write('<ul>\n')
+  for i in recipe_html:
+    out.write('<li>' + i + '</li>\n')
+  out.write('</ul>\n')
+
 title = ''
 zutaten = []
 zubereitung = []
@@ -45,13 +52,16 @@ mode = 'zutaten'
 newrecipe = False
 recipe_html = []
 
+rez_html_out = open('rezepte.html', 'w')
+rez_html_out.write(main_header)
+
 for infile in infiles:
   ff = open(infile)
   contents = ff.read()
   if 'haupt' in infile:
-    print('Hauptgerichte')
+    rez_html_out.write('<h2>Hauptgerichte</h2>\n')
   if 'nachspeisen' in infile:
-    print('Nachspeisen')
+    rez_html_out.write('<h2>Nachspeisen</h2>\n')
   for line in contents.split('\n'):
     if line == '':
       continue
@@ -84,6 +94,7 @@ for infile in infiles:
   title = ''
   zutaten = []
   zubereitung = []
-  print(recipe_html)
+  write_recipe_headers(rez_html_out, recipe_html)
   recipe_html = []
 
+rez_html_out.write('</body>')
