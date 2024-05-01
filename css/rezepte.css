@@ -2,76 +2,9 @@ body {
   background-color: #eea;
   padding: 0px 12px;
 }
-.gallery {
-  display: grid;
-  grid-template-rows: masonry;
-  grid-column-gap: 18px;
-  grid-row-gap: 18px;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  padding-left: 10%;
-}
 h1 {
   padding-left: 2%;
   color: #FF8C00;
-}
-.gallery img {
-  max-width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 0 16px #333;
-  transition: all 1.5s ease;
-}
-.gallery img:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 32px #FF8C00;
-}
-.gallery .gallery-item {
-  transition: grid-row-start 300ms linear;
-  transition: transform 300ms ease;
-  transition: all 0.5s ease;
-  cursor: pointer;
-  padding: 5px;
-}
-/* mobile default is left aligned */
-.navbar {
-  position: fixed;
-  left: 0;
-  display: block;
-  width: 10%;
-  height: 90%; 
-  margin-top: auto;
-  margin-bottom: auto;
-  border-radius: 0px 18px 18px 0px;
-  background-color: #FF8C00;
-  background: linear-gradient(90deg, #FF8C00 0%, #FF8C00 92%, rgba(0,0,0,0) 100%);
-  padding-left: 8px;
-  padding-top: 8px;
-}
-.navbar-item {
-  /* navbar items shown vertically on mobile */
-  display: block;
-  margin-bottom: 18px;
-  transition: all 5s ease-out;
-}
-.navbar-item:hover {
-  background: linear-gradient(90deg, #eea 0%, #FF8C00 92%, #eea 100%);
-  transition-property: background-color;
-  transition: background-color 5s;
-}
-@media screen and (max-width: 900px) {
-  .navbar {
-    width: 6%;
-  }
-  .navbar-item {
-    writing-mode: vertical-lr; 
-    /* text-orientation: upright; */
-    margin-bottom: 18px;
-    transform : rotate(180deg);
-  }
-}
-@media (max-width: 400px) {
-  .gallery {
-    grid-template-columns: repeat(auto-fill, minmax(50%, 1fr));
-  }
 }
 tr, td {
   padding: 1px 5px;
@@ -94,4 +27,28 @@ th:first-of-type {
 th {
   text-align: left;
   padding: 1px 5px;
+}
+.column {
+  float: left;
+  width: 70%;
+}
+.left {
+  width: 30%;
+  padding-left: 10px;
+}
+.right {
+  width: 60%;
+  padding-left: 10px;
+}/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+ul {
+  list-style-type: none;
+  padding: 0px;
+}
+li {
+  padding-bottom: 5px;
 }
