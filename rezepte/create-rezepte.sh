@@ -9,7 +9,7 @@ main_header = '''<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rezepte</title>
-  <link rel="stylesheet" href=\"css/rezepte.css\">
+  <link rel="stylesheet" href=\"../css/rezepte.css\">
 </head>
 <body>
 <h1>Rezepte</h1>
@@ -27,7 +27,7 @@ rez_header = '''<!DOCTYPE html>
 '''
 
 def print_recipe(title, zutaten, zubereitung, num):
-  out = open('rezepte/' + num + '.html', 'w')
+  out = open(num + '.html', 'w')
   out.write(rez_header.replace('TITLE', title))
   out.write('<h2>Zutaten</h2>\n<ul>\n')
   for l in zutaten:
@@ -48,13 +48,13 @@ zutaten = []
 zubereitung = []
 rez_num = 0
 
-infiles = ['rezepte/hauptgerichte.txt', 'rezepte/nachspeisen.txt']
+infiles = ['hauptgerichte.txt', 'nachspeisen.txt']
 
 mode = 'zutaten'
 newrecipe = False
 recipe_html = []
 
-rez_html_out = open('rezepte.html', 'w')
+rez_html_out = open('index.html', 'w')
 rez_html_out.write(main_header)
 
 for infile in infiles:
