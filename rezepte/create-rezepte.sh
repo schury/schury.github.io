@@ -29,13 +29,15 @@ rez_header = '''<!DOCTYPE html>
 def print_recipe(title, zutaten, zubereitung, num):
   out = open(num + '.html', 'w')
   out.write(rez_header.replace('TITLE', title))
+  out.write('<h1>' + title + '</h1>\n')
+  out.write('<div class="column">\n<div class="column left">\n')
   out.write('<h2>Zutaten</h2>\n<ul>\n')
   for l in zutaten:
     out.write('<li>' + l + '</li>\n')
-  out.write('</ul>\n<h2>Zubereitung</h2>\n<ul>\n')
+  out.write('</ul>\n</div>\n<div class="column right">\n<h2>Zubereitung</h2>\n<ul>\n')
   for l in zubereitung:
     out.write('<li>' + l + '</li>\n')
-  out.write('<ul>\n</body>\n')
+  out.write('<ul>\n</div>\n</div>\n</body>\n')
 
 def write_recipe_headers(out, recipe_html):
   out.write('<ul>\n')
