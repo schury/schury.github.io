@@ -26,6 +26,7 @@ rez_header = '''<!DOCTYPE html>
 <body>
 '''
 
+
 def print_recipe(title, zutaten, zubereitung, num):
   out = open(num + '.html', 'w')
   out.write(rez_header.replace('TITLE', title))
@@ -39,10 +40,12 @@ def print_recipe(title, zutaten, zubereitung, num):
     out.write('<li>' + l + '</li>\n')
   out.write('<ul>\n</div>\n</div>\n</body>\n')
 
-def write_recipe_headers(out, recipe_html):
+def write_recipe_headers(out, recipe_html, recipe_num):
   out.write('<ul>\n')
-  for i in recipe_html:
-    out.write('<li>' + i + '</li>\n')
+  i = 0
+  while i < len(recipe_html):
+    out.write('<li><a href="' + recipe_num[i] + '.html">' + recipe_html[i] + '</a></li>\n')
+    i += 1
   out.write('</ul>\n')
 
 title = ''
@@ -55,6 +58,7 @@ infiles = ['hauptgerichte.txt', 'nachspeisen.txt']
 mode = 'zutaten'
 newrecipe = False
 recipe_html = []
+recipe_num = []
 
 rez_html_out = open('index.html', 'w')
 rez_html_out.write(main_header)
@@ -75,6 +79,7 @@ for infile in infiles:
         rez_num += 1
         print_recipe(title, zutaten, zubereitung, f'{rez_num:03}')
         recipe_html.append(title)
+        recipe_num.append(f'{rez_num:03}')
         title = ''
         zutaten = []
         zubereitung = []
@@ -97,11 +102,13 @@ for infile in infiles:
   rez_num += 1
   print_recipe(title, zutaten, zubereitung, f'{rez_num:03}')
   recipe_html.append(title)
+  recipe_num.append(f'{rez_num:03}')
   title = ''
   zutaten = []
   zubereitung = []
-  write_recipe_headers(rez_html_out, recipe_html)
+  write_recipe_headers(rez_html_out, recipe_html, recipe_num)
   recipe_html = []
+  recipe_num = []
 
 rez_html_out.write('Stand: ' + str(date.today()) + '\n')
 rez_html_out.write('</body>')
