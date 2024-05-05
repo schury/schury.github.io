@@ -20,8 +20,7 @@ if len(sys.argv) < 2:
 url = sys.argv[1]
 
 #url = 'https://www.chefkoch.de/rezepte/4285991707060432/Shawarma-Huhn-nach-libanesischer-Art.html'
-def download_and_save_recipe(url, outfile):
-  out = open(outfile, 'w')
+def download_and_parse_recipe(url):
   next_twenty = 0
   name_done = False
   print_next_line = False
@@ -38,8 +37,7 @@ def download_and_save_recipe(url, outfile):
         if next_twenty > 0:
           if print_next_line:
             recipe_ingredients = sanitize_line(line.encode('utf-8').decode('unicode_escape'))
-            #recipe_ingredients = ' '.join(x.strip() for x in recipe_ingredients_tmp.split(','))
-            #recipe_ingredients = recipe_ingredients.replace('"', '')
+            recipe_ingredients = '\n'.join(x.replace('"','').replace(' ,', ',').replace('],','').strip() for x in recipe_ingredients.split('", "'))
             print_next_line = False
             continue
           if '"recipeIngredient"' in line:
@@ -60,8 +58,9 @@ def download_and_save_recipe(url, outfile):
   return recipe_name, recipe_ingredients, recipe_instructions
 
 
-recipe_name, recipe_ingredients, recipe_instructions = download_and_save_recipe(url, 'tmp_recipe')
+recipe_name, recipe_ingredients, recipe_instructions = download_and_parse_recipe(url)
 
-print('recipe_name = ' + recipe_name + '\n')
-print('recipe_ingredients = ' + recipe_ingredients + '\n')
-print('recipe_instructions = ' + recipe_instructions + '\n')
+print('REZEPT')
+print(recipe_name)
+print('Zutaten\n' + recipe_ingredients)
+print('Zubereitung\n' + recipe_instructions.replace('",','') + '\n')
