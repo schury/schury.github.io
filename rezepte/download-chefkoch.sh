@@ -4,6 +4,7 @@ import urllib.request, sys, os, re
 from urllib.error import HTTPError, URLError
 
 recipe_name = ''
+recipe_ingredients = ''
 recipe_instructions = ''
 
 def sanitize_line(l):
@@ -30,7 +31,6 @@ def download_and_parse_recipe(url):
       #contents = tmp_file.read().decode('unicode_escape').split('\n')
       
       for line in contents:
-        #line = sanitize_line(line)
         line = line.replace('\/', '/')
         if '"Recipe"' in line:
           next_twenty += 1
@@ -39,7 +39,6 @@ def download_and_parse_recipe(url):
           if print_next_line:
             recipe_ingredients = sanitize_line(line.encode('utf-8').decode('unicode_escape'))
             recipe_ingredients = '\n'.join(x.replace('"','').replace(' ,', ',').replace('],','').strip() for x in recipe_ingredients.split('", "'))
-            #recipe_ingredients = recipe_ingredients.replace(' EL', 'EL').replace(' TL', 'TL')
             recipe_ingredients = recipe_ingredients.replace(' ml', 'ml').replace(' g ', 'g ')
             print_next_line = False
             continue
