@@ -112,9 +112,9 @@ for line in contents.split("\n"):
   sss    = ls[0].split('[')
   song_n = ls[1][0:2]
   song_t = ls[1][5:].strip()
-  song_length = (int(ls[2]) / 44100)
-  min = int(song_length / 60)
-  sec = int(song_length % 60)
+  song_len = (int(ls[2]) / 44100)
+  min = int(song_len / 60)
+  sec = int(song_len % 60)
   song_l = f'{min:02}' + ':' + f'{sec:02}'
 
   if song_n == "01":
@@ -126,11 +126,12 @@ for line in contents.split("\n"):
     artist = sss[0][0:-3]
     year   = sss[1][0:4]
     album  = sss[1][6:]
+    prefix = '<tr><td>' + f'{num_disp:03}' + '</td>'
     if ("(Bonus)" in album) or ("(CD 2)" in album) or ("(Bonus Instrumental)" in album):
-      outfile.write('<tr><td></td><td>' + artist + '</td><td><a href=\"songs/' + f'{num_real:03}' + '.html\">' + album + '</a></td><td>' + year + '</td></tr>\n')
+      prefix = '<tr><td></td>'
     else:
-      outfile.write('<tr><td>' + f'{num_disp:03}' + '</td><td>' + artist + '</td><td><a href=\"songs/' + f'{num_real:03}' + '.html\">' + album + '</a></td><td>' + year + '</td></tr>\n')
       num_disp += 1
+    outfile.write(prefix + '<td>' + artist + '</td><td><a href=\"songs/' + f'{num_real:03}' + '.html\">' + album + '</a></td><td>' + year + '</td></tr>\n')
 
     # afterwards, we save for new album
     album_l  = min * 60 + sec
