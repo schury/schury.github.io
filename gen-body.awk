@@ -5,7 +5,7 @@ BEGIN {
   print "  <meta charset=\"UTF-8\" />"
   print "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
   print "  <title>Gallery</title>"
-  print "  <link rel=\"stylesheet\" href=\"gallery.css\" />"
+  print "  <link rel=\"stylesheet\" href=\"css/gallery.css\" />"
   print "</head>"
   print "<body>"
   print "  <div class=\"navbar\" id=\"navbar\">"
