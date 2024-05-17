@@ -27,8 +27,8 @@ rez_header = '''<!DOCTYPE html>
 '''
 
 
-def print_recipe(title, zutaten, zubereitung, num):
-  out = open(num + '.html', 'w')
+def print_recipe(title, zutaten, zubereitung, filename):
+  out = open(filename + '.html', 'w')
   out.write(rez_header.replace('TITLE', title))
   out.write('<h1>' + title + '</h1>\n')
   out.write('<div class="column">\n<div class="column left">\n')
