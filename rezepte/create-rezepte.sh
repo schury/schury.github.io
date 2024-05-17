@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import os, sys
+import os, sys, hashlib
 from datetime import date
 
 main_header = '''<!DOCTYPE html>
@@ -77,9 +77,10 @@ for infile in infiles:
       newrecipe = True
       if title != '':
         rez_num += 1
-        print_recipe(title, zutaten, zubereitung, f'{rez_num:03}')
+        rez_html_filename = hashlib.sha256((title + 'rezept').encode('utf-8')).hexdigest()[0:12]
+        print_recipe(title, zutaten, zubereitung, rez_html_filename)
         recipe_html.append(title)
-        recipe_num.append(f'{rez_num:03}')
+        recipe_num.append(rez_html_filename)
         title = ''
         zutaten = []
         zubereitung = []
@@ -100,9 +101,10 @@ for infile in infiles:
       zubereitung.append(line)
    
   rez_num += 1
-  print_recipe(title, zutaten, zubereitung, f'{rez_num:03}')
+  rez_html_filename = hashlib.sha256((title + 'rezept').encode('utf-8')).hexdigest()[0:12]
+  print_recipe(title, zutaten, zubereitung, rez_html_filename)
   recipe_html.append(title)
-  recipe_num.append(f'{rez_num:03}')
+  recipe_num.append(rez_html_filename)
   title = ''
   zutaten = []
   zubereitung = []
