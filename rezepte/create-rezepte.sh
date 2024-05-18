@@ -21,14 +21,14 @@ rez_header = '''<!DOCTYPE html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TITLE</title>
-  <link rel="stylesheet" href=\"../css/rezepte.css\">
+  <link rel="stylesheet" href=\"../../css/rezepte.css\">
 </head>
 <body>
 '''
 
 
 def print_recipe(title, zutaten, zubereitung, filename):
-  out = open(filename + '.html', 'w')
+  out = open('rezepte/' + filename + '.html', 'w')
   out.write(rez_header.replace('TITLE', title))
   out.write('<h1>' + title + '</h1>\n')
   out.write('<div class="column">\n<div class="column left">\n')
@@ -44,7 +44,7 @@ def write_recipe_headers(out, recipe_html, recipe_num):
   out.write('<ul>\n')
   i = 0
   while i < len(recipe_html):
-    out.write('<li><a href="' + recipe_num[i] + '.html">' + recipe_html[i] + '</a></li>\n')
+    out.write('<li><a href="rezepte/' + recipe_num[i] + '.html">' + recipe_html[i] + '</a></li>\n')
     i += 1
   out.write('</ul>\n')
 
@@ -60,7 +60,7 @@ newrecipe = False
 recipe_html = []
 recipe_num = []
 
-rez_html_out = open('index.html', 'w')
+rez_html_out = open('rezepte.html', 'w')
 rez_html_out.write(main_header)
 
 for infile in infiles:
@@ -77,7 +77,7 @@ for infile in infiles:
       newrecipe = True
       if title != '':
         rez_num += 1
-        rez_html_filename = hashlib.sha256((title + 'rezept').encode('utf-8')).hexdigest()[0:12]
+        rez_html_filename = hashlib.sha256(title.encode('utf-8')).hexdigest()[0:12]
         print_recipe(title, zutaten, zubereitung, rez_html_filename)
         recipe_html.append(title)
         recipe_num.append(rez_html_filename)
@@ -101,7 +101,7 @@ for infile in infiles:
       zubereitung.append(line)
    
   rez_num += 1
-  rez_html_filename = hashlib.sha256((title + 'rezept').encode('utf-8')).hexdigest()[0:12]
+  rez_html_filename = hashlib.sha256(title.encode('utf-8')).hexdigest()[0:12]
   print_recipe(title, zutaten, zubereitung, rez_html_filename)
   recipe_html.append(title)
   recipe_num.append(rez_html_filename)
