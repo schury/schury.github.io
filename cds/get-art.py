@@ -27,6 +27,8 @@ def download_and_save_art(rg_id, filename):
 
 if len(sys.argv) < 3:
   print('not enough arguments')
+  print('Argument 1: Artist')
+  print('Argument 2: Album')
   sys.exit()
 
 artist = sys.argv[1].lower()
