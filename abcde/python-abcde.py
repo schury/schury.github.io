@@ -11,6 +11,8 @@ import wave
 import glob
 from mutagen.flac import FLAC
 from mutagen.easyid3 import EasyID3
+import cdio
+import pycdio
 
 Debug = False
 
@@ -35,6 +37,59 @@ class Track:
   number = 0
   name   = ''
 
+
+
+# only valid for linux, probably
+CD_OFFSET=150
+CD_FRAMES=75
+
+def cddb_sum(n):
+  ret = 0
+  while(n > 1):
+    ret += int(n % 10)
+    n /= 10
+  return ret
+
+def calculate_checksum():
+  try:
+    d = cdio.Device(driver_id=pycdio.DRIVER_UNKNOWN)
+    drive_name = d.get_device()
+  except IOError:
+    print("Problem finding a CD-ROM")
+    sys.exit(1)
+
+  t = d.get_first_track()
+  if t is None:
+      print("Problem getting first track")
+      sys.exit(2)
+
+  first_track = t.track
+  num_tracks  = d.get_num_tracks()
+  last_track  = first_track+num_tracks
+
+  check_sum=0
+  i = first_track
+  prev_lsn = 0
+  tracks_string = " "
+  while(i < last_track):
+    t1 = d.get_track(i)
+    check_sum += cddb_sum((CD_OFFSET+t1.get_lsn())/CD_FRAMES)
+    tracks_string += str(CD_OFFSET+t1.get_lsn()) + " "
+    i += 1
+    prev_lsn = t1.get_lsn()
+
+  #print("%3X: %06lu  leadout" % (pycdio.CDROM_LEADOUT_TRACK, d.get_disc_last_lsn()))
+
+  totaltime = int( (d.get_disc_last_lsn() - d.get_first_track().get_lsn())/CD_FRAMES )
+
+
+  #print("Checksum: " + str(check_sum))
+  #print("Total time: " + str(totaltime))
+
+
+  cs = ("%08lx " % ((check_sum % 0xff) << 24 | totaltime << 8 | num_tracks))
+
+  return cs + str(num_tracks) + tracks_string + str(int( (d.get_disc_last_lsn() + CD_OFFSET )/CD_FRAMES ))
 
 
 
@@ -338,12 +393,14 @@ disc_id = ''
 
 # use external program cd-discid to get the discid
 # DEP remove this dependency by calculating from scratch?
-disc_id = subprocess.getoutput('cd-discid')
+#disc_id = subprocess.getoutput('cd-discid')
+disc_id = calculate_checksum()
 if 'CDROMREADTOCHDR' in disc_id:
   print('Error: ' + disc_id)
   sys.exit()
 
 print('DiscID: ' + disc_id)
+
 cd_id = disc_id.split()[0]
 
 cache_filename = dir_idcache + '/' + cd_id
