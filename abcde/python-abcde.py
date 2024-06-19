@@ -7,6 +7,8 @@ import os
 import sys
 import psutil
 import time
+import wave
+import glob
 from mutagen.flac import FLAC
 from mutagen.easyid3 import EasyID3
 
@@ -160,9 +162,27 @@ def create_mp3():
 
   mp3_filename = cd_artist + ' - [' + cd_year + '] ' + cd_album + '.mp3'
 
-# join the wav files together using shntool
-# not so nice, but what can you do?
-  os.system('shntool join -q -O always -n track*.wav') 
+# join the wav files together using python wave
+# os.system('shntool join -q -O always -n track*.wav') 
+  infiles = glob.glob('track*.wav', recursive=True)
+  infiles.sort()
+  # print(infiles)
+  outfile = "joined.wav"
+
+
+  data = []
+  for infile in infiles:
+      w = wave.open(infile, 'rb')
+      data.append( [w.getparams(), w.readframes(w.getnframes())] )
+      w.close()
+      
+  output = wave.open(outfile, 'wb')
+  output.setparams(data[0][0])
+  for i in range(len(data)):
+      output.writeframes(data[i][1])
+  output.close()
+
+
   os.system('ffmpeg -loglevel warning -i joined.wav -acodec mp3 -ab 128k out.mp3')  
   os.rename('out.mp3', mp3_filename)
 # alternative for ffmpeg conversion using lame - maybe higher quality?
