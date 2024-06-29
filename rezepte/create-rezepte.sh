@@ -53,7 +53,7 @@ zutaten = []
 zubereitung = []
 rez_num = 0
 
-infiles = ['hauptgerichte.txt', 'nachspeisen.txt']
+infiles = ['hauptgerichte.txt', 'beilagen.txt', 'nachspeisen.txt']
 
 mode = 'zutaten'
 newrecipe = False
@@ -66,8 +66,10 @@ rez_html_out.write(main_header)
 for infile in infiles:
   ff = open(infile)
   contents = ff.read()
-  if 'haupt' in infile:
+  if 'hauptgerichte' in infile:
     rez_html_out.write('<h2>Hauptgerichte</h2>\n')
+  if 'beilagen' in infile:
+    rez_html_out.write('<h2>Beilagen</h2>\n')
   if 'nachspeisen' in infile:
     rez_html_out.write('<h2>Nachspeisen</h2>\n')
   for line in contents.split('\n'):
