@@ -1,0 +1,1 @@
+lwp-request "https://monitoringapi.solaredge.com/site/3045847/energyDetails?timeUnit=MONTH&startTime=2025-01-01%2000:00:00&endTime=2025-07-31%2000:00:00&api_key="
