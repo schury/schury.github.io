@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
-import urllib.request, sys, os
+import urllib.request, sys, os, json
 from urllib.error import HTTPError, URLError
 
 types = ['Production', 'Consumption', 'SelfConsumption', 'FeedIn', 'Purchased']
+types = ['Production']
 
 infile = open("../../se-api-key", "r")
 api_key = infile.read()
@@ -17,6 +18,8 @@ for t in types:
   with urllib.request.urlopen(u) as data:
     outstring = data.read().decode('UTF-8')
     print(outstring)
-    values = outstring.split('"values":')[1].split('},{')
-    for v in values: 
-      print(v)
+
+    j = json.loads(outstring)
+    vals = j["energyDetails"]["meters"][0]["values"]
+    for v in vals:
+      print(v["date"] + '   ' + str(v["value"]))
