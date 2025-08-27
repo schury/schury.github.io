@@ -2,27 +2,30 @@
 
 import urllib.request, sys, os, json
 from urllib.error import HTTPError, URLError
+from datetime import datetime
 
 test = True
-dateStart = '2025-01-01'
-dateEnd   = '2025-07-31'
 
 types = {'SelfConsumption' : 0, 'Purchased' : 0, 'Production' : 0, 'Consumption' : 0, 'FeedIn' : 0}
 meters = ','.join(types)
 
-infile = open("../../se-api-key", "r")
-api_key = infile.read()
-
-raw_url = 'https://monitoringapi.solaredge.com/site/3045847/energyDetails?meters=$METERS&timeUnit=MONTH&startTime=$DATESTART%2000:00:00&endTime=$DATEEND%2000:00:00&api_key=$APIKEY'
-
-url = raw_url.replace('$METERS', meters).replace('$APIKEY', api_key).replace('$DATESTART', dateStart).replace('$DATEEND', dateEnd)
-
 # for testing we use a local file containing the api response
 outstring = ''
 if test:
-  f = open('response-2024', 'r')
+  f = open('response-2022', 'r')
   outstring = f.readline()
 else:
+  dateStart = str(datetime.today().year) + '-01-01'
+  dateEnd   = '2025-12-31'
+  dateEnd   = datetime.today().strftime('%Y-%m-%d')
+
+  infile = open("../../se-api-key", "r")
+  api_key = infile.read()
+
+  raw_url = 'https://monitoringapi.solaredge.com/site/3045847/energyDetails?meters=$METERS&timeUnit=MONTH&startTime=$DATESTART%2000:00:00&endTime=$DATEEND%2000:00:00&api_key=$APIKEY'
+
+  url = raw_url.replace('$METERS', meters).replace('$APIKEY', api_key).replace('$DATESTART', dateStart).replace('$DATEEND', dateEnd)
+
   data = urllib.request.urlopen(url)
   outstring = data.read().decode('UTF-8')
 
