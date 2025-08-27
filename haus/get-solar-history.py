@@ -7,7 +7,7 @@ test = True
 dateStart = '2025-01-01'
 dateEnd   = '2025-07-31'
 
-types = ['Production', 'Consumption', 'SelfConsumption', 'FeedIn', 'Purchased']
+types = {'SelfConsumption' : 0, 'Purchased' : 0, 'Production' : 0, 'Consumption' : 0, 'FeedIn' : 0}
 meters = ','.join(types)
 
 infile = open("../../se-api-key", "r")
@@ -28,24 +28,35 @@ else:
 
 type_header = '          '
 lines = []
-type_totals = '          '
+type_totals = 'Totals:   '
 header_length = 0
 
-for i in range(len(types)):
-  j = json.loads(outstring)["energyDetails"]["meters"]
-  vals = j[i]["values"]
+j = json.loads(outstring)["energyDetails"]["meters"]
+
+for key in types:
+  for i in range(len(types)):
+    if key == j[i]["type"]:
+      types[key] = i
+
+first = True
+for key in types:
+  curr_type_index = types[key]
+  # print(j[curr_type_index]["type"])
+  # print(curr_type_index)
+  vals = j[curr_type_index]["values"]
   header_length = len(type_header)
-  type_header = type_header + j[i]["type"] + '  '
+  type_header = type_header + j[curr_type_index]["type"] + '  '
   total = 0.0
   k = 0
   for v in vals:
-    if i == 0:
+    if first:
       lines.append(v["date"].split()[0][0:-3] + '   ' + str(round(v["value"]/1000.0, 1)))
     else:
       lines[k] = lines[k].ljust(header_length) + str(round(v["value"]/1000.0, 1))
     k = k + 1
     total = total + v["value"]
   type_totals = type_totals.ljust(header_length) + str(round(total/1000.0, 1))
+  first = False
     
 print(type_header)
 for l in lines:
