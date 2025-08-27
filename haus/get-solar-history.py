@@ -30,6 +30,7 @@ type_header = '          '
 lines = []
 type_totals = 'Totals:   '
 header_length = 0
+padding = '   '
 
 j = json.loads(outstring)["energyDetails"]["meters"]
 
@@ -44,23 +45,28 @@ for key in types:
   # print(j[curr_type_index]["type"])
   # print(curr_type_index)
   vals = j[curr_type_index]["values"]
-  header_length = len(type_header)
-  type_header = type_header + j[curr_type_index]["type"] + '  '
+  header_length = len(j[curr_type_index]["type"])
+  type_header = type_header + j[curr_type_index]["type"] + padding
   total = 0.0
   k = 0
   for v in vals:
     if first:
-      lines.append(v["date"].split()[0][0:-3] + '   ' + str(round(v["value"]/1000.0, 1)))
+      tmp = str(round(v["value"]/1000.0, 1))
+      lines.append(v["date"].split()[0][0:-3] + '   ' + tmp.rjust(header_length))
     else:
-      lines[k] = lines[k].ljust(header_length) + str(round(v["value"]/1000.0, 1))
+      lines[k] = lines[k] + str(round(v["value"]/1000.0, 1)).rjust(header_length + len(padding))
     k = k + 1
     total = total + v["value"]
-  type_totals = type_totals.ljust(header_length) + str(round(total/1000.0, 1))
+  if first:
+    type_totals = type_totals + str(round(total/1000.0, 1)).rjust(header_length)
+  else:
+    type_totals = type_totals + str(round(total/1000.0, 1)).rjust(header_length + len(padding))
   first = False
     
 print(type_header)
 for l in lines:
   print(l)
+print('-' * len(type_totals))
 print(type_totals)
 
 if False:
