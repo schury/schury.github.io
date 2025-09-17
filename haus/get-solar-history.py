@@ -4,7 +4,7 @@ import urllib.request, sys, os, json
 from urllib.error import HTTPError, URLError
 from datetime import datetime
 
-test = True
+test = False
 
 types = {'SelfConsumption' : 0, 'Purchased' : 0, 'Production' : 0, 'Consumption' : 0, 'FeedIn' : 0}
 meters = ','.join(types)
