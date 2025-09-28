@@ -29,6 +29,8 @@ for l in r.text.splitlines():
 date_now = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
 
 print(str(storage + internal) + 'kg ' + date_now + ' ' + tries)
+
+header_text = ['Durchschnitt (pro Tag)', ' Tage', '      Verbrauch', 'Zeitraum', 'Retouren']
     
 with open('pellets') as pellets_file:
   pc = pellets_file.read()
@@ -37,7 +39,7 @@ with open('pellets') as pellets_file:
     if first:
       p_old = int(l.split()[0][0:-2])
       d_old = datetime.strptime(l.split()[1] + ' ' + l.split()[2], "%d.%m.%Y %H:%M:%S")
-      print("Durchschnitt (pro Tag) Tage Verbrauch Lagerstand Zeitraum Retouren")
+      print(' '.join(header_text))
       first = False
       continue
     p = int(l.split()[0][0:-2])
@@ -52,9 +54,8 @@ with open('pellets') as pellets_file:
     secs = d_diff.total_seconds()
     avg_pellets = 24*3600 * (p_diff / secs)
     hoursmins = time.strftime("%H:%M", time.gmtime(secs))
-    days = int(secs / (24*60*60))
     days = int(d_diff.days)
-    print("{:8.2f} {:5d}d {:8s} {:5d} {} {}".format(avg_pellets, days, hoursmins, p_diff, str(d).split()[0], tries))
+    print("{:22.2f} {:5d}d {:8s} {:5d} {} {}".format(avg_pellets, days, hoursmins, p_diff, str(d).split()[0], tries))
 
 
     p_old = p
