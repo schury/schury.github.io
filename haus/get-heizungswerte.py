@@ -30,41 +30,38 @@ for l in r.text.splitlines():
     tries = l.split()[4].split('"')[1]
 
 date_now = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
-
 print(str(storage + internal) + 'kg ' + date_now + ' ' + tries)
+
 
 header_text = ['Durchschnitt (pro Tag)', ' Tage', '      Verbrauch', 'Zeitraum               ', 'Retouren']
     
-with open('pellets') as pellets_file:
-  pc = pellets_file.read()
-  current_line = 0
-  lines = pc.splitlines()
-  count_lines = len(lines)
-  for l in lines:
-    if current_line < count_lines - 20:
-      current_line = current_line + 1
-      continue
-    if current_line == count_lines - 20:
-      p_old = int(l.split()[0][0:-2])
-      d_old = datetime.strptime(l.split()[1] + ' ' + l.split()[2], "%d.%m.%Y %H:%M:%S")
-      print(' '.join(header_text))
-      current_line = current_line + 1
-      continue
-    p = int(l.split()[0][0:-2])
-    d = datetime.strptime(l.split()[1] + ' ' + l.split()[2], "%d.%m.%Y %H:%M:%S")
-    d_diff = d - d_old
-    p_diff = p_old - p
-    if p_diff < 0:
-      print('TANKEN ' + str(-1*p_diff))
-      p_old = p
-      d_old = d
-      continue
-    secs = d_diff.total_seconds()
-    avg_pellets = 24*3600 * (p_diff / secs)
-    hoursmins = time.strftime("%H:%M", time.gmtime(secs))
-    days = int(d_diff.days)
-    print("{:22.2f} {:5d}d {:8s} {:5d} {} {}".format(avg_pellets, days, hoursmins, p_diff, d_old.strftime("%d.%m.%Y") + ' - ' + d.strftime("%d.%m.%Y"), tries))
+pellets_file = open('pellets')
+lines = pellets_file.readlines()[-20:]
+
+first = True
+for l in lines:
+  if first:
+    pellets_old = int(l.split()[0][0:-2])
+    date_old = datetime.strptime(l.split()[1] + ' ' + l.split()[2], "%d.%m.%Y %H:%M:%S")
+    print(' '.join(header_text))
+    first = False
+    continue
+  p = int(l.split()[0][0:-2])
+  d = datetime.strptime(l.split()[1] + ' ' + l.split()[2], "%d.%m.%Y %H:%M:%S")
+  t = l.split()[3]
+  d_diff = d - date_old
+  p_diff = pellets_old - p
+  if p_diff < 0:
+    print('TANKEN ' + str(-1*p_diff))
+    pellets_old = p
+    date_old = d
+    continue
+  secs = d_diff.total_seconds()
+  avg_pellets = 24*3600 * (p_diff / secs)
+  hoursmins = time.strftime("%H:%M", time.gmtime(secs))
+  days = int(d_diff.days)
+  print("{:22.2f} {:5d}d {:8s} {:5d} {} {}".format(avg_pellets, days, hoursmins, p_diff, date_old.strftime("%d.%m.%Y") + ' - ' + d.strftime("%d.%m.%Y"), t))
 
 
-    p_old = p
-    d_old = d
+  pellets_old = p
+  date_old = d
