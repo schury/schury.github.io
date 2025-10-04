@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+##### TODO
+## - anhängen aktueller Stand an pellets datei
+
 import requests, time
 from datetime import datetime
 
@@ -30,17 +33,22 @@ date_now = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
 
 print(str(storage + internal) + 'kg ' + date_now + ' ' + tries)
 
-header_text = ['Durchschnitt (pro Tag)', ' Tage', '      Verbrauch', 'Zeitraum', 'Retouren']
+header_text = ['Durchschnitt (pro Tag)', ' Tage', '      Verbrauch', 'Zeitraum               ', 'Retouren']
     
 with open('pellets') as pellets_file:
   pc = pellets_file.read()
-  first = True
-  for l in pc.splitlines():
-    if first:
+  current_line = 0
+  lines = pc.splitlines()
+  count_lines = len(lines)
+  for l in lines:
+    if current_line < count_lines - 20:
+      current_line = current_line + 1
+      continue
+    if current_line == count_lines - 20:
       p_old = int(l.split()[0][0:-2])
       d_old = datetime.strptime(l.split()[1] + ' ' + l.split()[2], "%d.%m.%Y %H:%M:%S")
       print(' '.join(header_text))
-      first = False
+      current_line = current_line + 1
       continue
     p = int(l.split()[0][0:-2])
     d = datetime.strptime(l.split()[1] + ' ' + l.split()[2], "%d.%m.%Y %H:%M:%S")
@@ -55,7 +63,7 @@ with open('pellets') as pellets_file:
     avg_pellets = 24*3600 * (p_diff / secs)
     hoursmins = time.strftime("%H:%M", time.gmtime(secs))
     days = int(d_diff.days)
-    print("{:22.2f} {:5d}d {:8s} {:5d} {} {}".format(avg_pellets, days, hoursmins, p_diff, str(d).split()[0], tries))
+    print("{:22.2f} {:5d}d {:8s} {:5d} {} {}".format(avg_pellets, days, hoursmins, p_diff, d_old.strftime("%d.%m.%Y") + ' - ' + d.strftime("%d.%m.%Y"), tries))
 
 
     p_old = p
