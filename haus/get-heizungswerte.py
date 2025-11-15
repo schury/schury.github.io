@@ -30,8 +30,10 @@ for l in r.text.splitlines():
     tries = l.split()[4].split('"')[1]
 
 date_now = datetime.now().strftime("%d.%m.%Y %H:%M:%S")
-print(str(storage + internal) + 'kg ' + date_now + ' ' + tries)
+outstring = "{:04d}".format(storage + internal) + 'kg ' + date_now + ' ' + tries
 
+with open('pellets', 'a') as file:
+  file.write(outstring + '\n')
 
 header_text = ['Durchschnitt (pro Tag)', ' Tage', '      Verbrauch', 'Zeitraum               ', 'Retouren']
     
