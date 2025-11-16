@@ -23,15 +23,16 @@ infile.close()
 
 changes = False
 
-outfile = open('cd-list-raw-length', 'a')
-for r in result:
-  song = r[0:-5]
-  if song not in cd_list:
-    print("adding " + song)
-    changes = True
-    # here we now call metaflac to get the length of the song
-    l = os.popen('metaflac --show-total-samples "' + flac_directory + '/' + r + '"').read()
-    outfile.write(song + ' / ' + l)
+
+with open('cd-list-raw-length', 'a') as outfile:
+  for r in result:
+    song = r[0:-5]
+    if song not in cd_list:
+      print("adding " + song)
+      changes = True
+      # here we now call metaflac to get the length of the song
+      l = os.popen('metaflac --show-total-samples "' + flac_directory + '/' + r + '"').read()
+      outfile.write(song + ' / ' + l)
 
 if changes:
   os.popen('sort cd-list-raw-length -o cd-list-raw-length')
