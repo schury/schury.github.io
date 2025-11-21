@@ -38,7 +38,7 @@ with open('pellets', 'a') as file:
 header_text = ['Durchschnitt (pro Tag)', ' Tage', '      Verbrauch', 'Zeitraum               ', 'Retouren']
     
 pellets_file = open('pellets')
-lines = pellets_file.readlines()[-20:]
+lines = pellets_file.readlines()[-30:]
 
 first = True
 for l in lines:
