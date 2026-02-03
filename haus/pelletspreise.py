@@ -24,5 +24,5 @@ gesamtpreis = round( ( menge * preis_pro_t / 1000.0 + pauschale ) * mwst , 2)
 
 date_now = datetime.now().strftime("%d.%m.%Y")
 
-print('Datum       Menge   Einblaspauschale     Gesamtpreis')
-print("{:8s} {:6.0f} {:18.2f} {:15.2f}".format(date_now, menge, pauschale, gesamtpreis))
+print('Datum       Menge   Preis/t     Gesamtpreis')
+print("{:8s} {:6.0f} {:9.2f} {:15.2f}".format(date_now, menge, preis_pro_t, gesamtpreis))
