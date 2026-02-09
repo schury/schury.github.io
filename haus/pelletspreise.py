@@ -33,7 +33,14 @@ print(outstring)
 
 response_sack = requests.post(url, data=data_sack)
 t_sack = json.loads(response_sack.text)
-print(t_sack)
+# print(t_sack)
+preis_sack = float(t_sack['NettoEinzelpreis'])
+menge_sack = float(data_sack['menge'])
+gewicht_sack = float(data_sack['Palettengewicht'])
+preis_pro_t_sack = ( 1000.0 /gewicht_sack ) * preis_sack
+gesamtpreis = round( ( menge_sack * preis_sack ) * mwst , 2)
+outstring = "{:8s} {:6.0f} {:9.2f} {:15.2f}".format(date_now, menge_sack, preis_pro_t_sack, gesamtpreis)
+print(outstring)
 
-with open('pelletspreise', 'a') as file:
-  file.write(outstring + '\n')
+#with open('pelletspreise', 'a') as file:
+#  file.write(outstring + '\n')
