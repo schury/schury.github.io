@@ -11,11 +11,14 @@ data = { "Produkt": "P101", "Einheit": "kg", "Transport": "Lieferung", "NettoOnl
 
 data['menge'] = '3000'
 
-response = requests.post(url, data=data)
-# print(response.text)
-t = json.loads(response.text)
-preis_pro_t = float(t['NettoEinzelpreis'])
 
+data_sack = { "Produkt": "P104", "Einheit": "Pal.", "Transport": "Lieferung", "NettoOnlinerabatt": "0", "formURL": "/preise_pellets_sackware_lieferung.php", "Mehrwertsteuerfaktor": "1.07", "Mindestmenge": "1", "anti_csrf_token": "6989b7abe8cc6", "device": "c", "NettoEinzelpreis": "", "NettoEinzelpreisMindestmenge": "", "Lieferzeit": "30", "Bundesland": "BY", "Palettengewicht": "975", "Fahrzeit": "", "Gebiet": "", "Lager": "", "Lager_id": "", "NettoPreiszuschlagTermin": "", "RZ": "0", "Gesamtmenge": "", "Lieferfrist": "", "Kundennummer": "", "GesamtPreisManuell": "", "KundenBestellnr": "", "Land": "DE", "Notiz": "", "plz": "91086", "menge": "2", "lieferstellen": "1", "Auftragsnummer": "", "plzLieferanschrift": "", "ortLieferanschrift": "", "anrede": "Herr", "vorname": "", "name": "", "firma": "", "firma2": "", "firma3": "", "anschrift": "", "email": "", "telefon1": "", "telefon2": "", "teilmenge": "", "Rabattmarken": "", "Hinweistext": "", "ara": "nein", "RaVorname": "", "RaName": "", "RaFirma": "", "RaFirma2": "", "RaFirma3": "", "RaAnschrift": "", "RaPLZ": "", "RaOrt": "", "RaEmail": "", "RaTelefon1": "", "RaTelefon2": "", "za": "Vorkasse", "Kontoinhaber": "", "iban": "", "bic": "", "bday": "", "bmonth": "", "byear": "", "GebDatum": "", "Zahlungsbetrag": "", "Versandart": "30" }
+
+response      = requests.post(url, data=data)
+# print(response.text)
+t      = json.loads(response.text)
+
+preis_pro_t = float(t['NettoEinzelpreis'])
 menge = float(data['menge'])
 pauschale = float(data['NettoEinblaspauschale'])
 mwst = float(data['Mehrwertsteuerfaktor'])
@@ -27,6 +30,10 @@ date_now = datetime.now().strftime("%d.%m.%Y")
 print('Datum       Menge   Preis/t     Gesamtpreis')
 outstring = "{:8s} {:6.0f} {:9.2f} {:15.2f}".format(date_now, menge, preis_pro_t, gesamtpreis)
 print(outstring)
+
+response_sack = requests.post(url, data=data_sack)
+t_sack = json.loads(response_sack.text)
+print(t_sack)
 
 with open('pelletspreise', 'a') as file:
   file.write(outstring + '\n')
