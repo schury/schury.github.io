@@ -12,7 +12,7 @@ data = { "Produkt": "P101", "Einheit": "kg", "Transport": "Lieferung", "NettoOnl
 data['menge'] = '3000'
 
 
-data_sack = { "Produkt": "P104", "Einheit": "Pal.", "Transport": "Lieferung", "NettoOnlinerabatt": "0", "formURL": "/preise_pellets_sackware_lieferung.php", "Mehrwertsteuerfaktor": "1.07", "Mindestmenge": "1", "anti_csrf_token": "6989b7abe8cc6", "device": "c", "NettoEinzelpreis": "", "NettoEinzelpreisMindestmenge": "", "Lieferzeit": "30", "Bundesland": "BY", "Palettengewicht": "975", "Fahrzeit": "", "Gebiet": "", "Lager": "", "Lager_id": "", "NettoPreiszuschlagTermin": "", "RZ": "0", "Gesamtmenge": "", "Lieferfrist": "", "Kundennummer": "", "GesamtPreisManuell": "", "KundenBestellnr": "", "Land": "DE", "Notiz": "", "plz": "91086", "menge": "2", "lieferstellen": "1", "Auftragsnummer": "", "plzLieferanschrift": "", "ortLieferanschrift": "", "anrede": "Herr", "vorname": "", "name": "", "firma": "", "firma2": "", "firma3": "", "anschrift": "", "email": "", "telefon1": "", "telefon2": "", "teilmenge": "", "Rabattmarken": "", "Hinweistext": "", "ara": "nein", "RaVorname": "", "RaName": "", "RaFirma": "", "RaFirma2": "", "RaFirma3": "", "RaAnschrift": "", "RaPLZ": "", "RaOrt": "", "RaEmail": "", "RaTelefon1": "", "RaTelefon2": "", "za": "Vorkasse", "Kontoinhaber": "", "iban": "", "bic": "", "bday": "", "bmonth": "", "byear": "", "GebDatum": "", "Zahlungsbetrag": "", "Versandart": "30" }
+data_sack = { "Produkt": "P104", "Einheit": "Pal.", "Transport": "Lieferung", "NettoOnlinerabatt": "0", "formURL": "/preise_pellets_sackware_lieferung.php", "Mehrwertsteuerfaktor": "1.07", "Mindestmenge": "1", "anti_csrf_token": "6989b7abe8cc6", "device": "c", "NettoEinzelpreis": "", "NettoEinzelpreisMindestmenge": "", "Lieferzeit": "30", "Bundesland": "BY", "Palettengewicht": "975", "Fahrzeit": "", "Gebiet": "", "Lager": "", "Lager_id": "", "NettoPreiszuschlagTermin": "", "RZ": "0", "Gesamtmenge": "", "Lieferfrist": "", "Kundennummer": "", "GesamtPreisManuell": "", "KundenBestellnr": "", "Land": "DE", "Notiz": "", "plz": "91086", "menge": "3", "lieferstellen": "1", "Auftragsnummer": "", "plzLieferanschrift": "", "ortLieferanschrift": "", "anrede": "Herr", "vorname": "", "name": "", "firma": "", "firma2": "", "firma3": "", "anschrift": "", "email": "", "telefon1": "", "telefon2": "", "teilmenge": "", "Rabattmarken": "", "Hinweistext": "", "ara": "nein", "RaVorname": "", "RaName": "", "RaFirma": "", "RaFirma2": "", "RaFirma3": "", "RaAnschrift": "", "RaPLZ": "", "RaOrt": "", "RaEmail": "", "RaTelefon1": "", "RaTelefon2": "", "za": "Vorkasse", "Kontoinhaber": "", "iban": "", "bic": "", "bday": "", "bmonth": "", "byear": "", "GebDatum": "", "Zahlungsbetrag": "", "Versandart": "30" }
 
 response      = requests.post(url, data=data)
 # print(response.text)
@@ -27,10 +27,11 @@ gesamtpreis = round( ( menge * preis_pro_t / 1000.0 + pauschale ) * mwst , 2)
 
 date_now = datetime.now().strftime("%d.%m.%Y")
 
-print('Datum       Menge   Preis/t     Gesamtpreis')
 outstring = "{:8s} {:6.0f} {:9.2f} {:15.2f}".format(date_now, menge, preis_pro_t, gesamtpreis)
-print(outstring)
+# print(outstring)
 
+
+##### Sackware
 response_sack = requests.post(url, data=data_sack)
 t_sack = json.loads(response_sack.text)
 # print(t_sack)
@@ -39,8 +40,11 @@ menge_sack = float(data_sack['menge'])
 gewicht_sack = float(data_sack['Palettengewicht'])
 preis_pro_t_sack = ( 1000.0 /gewicht_sack ) * preis_sack
 gesamtpreis = round( ( menge_sack * preis_sack ) * mwst , 2)
-outstring = "{:8s} {:6.0f} {:9.2f} {:15.2f}".format(date_now, menge_sack, preis_pro_t_sack, gesamtpreis)
-print(outstring)
+outstring_sack = "{:6.0f} {:9.2f} {:18.2f}".format(menge_sack, preis_pro_t_sack, gesamtpreis)
 
-#with open('pelletspreise', 'a') as file:
-#  file.write(outstring + '\n')
+
+print('Datum       Menge   Preis/t     Gesamtpreis   Sack   Preis/t   Gesamtpreis_Sack')
+print(outstring, outstring_sack)
+
+with open('pelletspreise', 'a') as file:
+  file.write(outstring + ' ' + outstring_sack + '\n')
