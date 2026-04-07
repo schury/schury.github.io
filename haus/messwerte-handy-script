@@ -1,0 +1,75 @@
+// heizung
+// 07.04.2026
+// 120/10221/0/0/12197 name="Außentemperatur"
+// 120/10221/0/11139/0 name="Kollektor"
+// 120/10221/0/11139/2002 name="Kollektorzustand"
+// 120/10601/0/11327/0 name="Fühler 1 (oben)"
+// 120/10601/0/11328/0 name="Fühler 2"
+// 120/10601/0/11329/0 name="Fühler 3"
+// 120/10601/0/11330/0 name="Fühler 4"
+// 264/10201/0/0/12015 name="Vorrat"
+// 264/10891/0/0/12011 name="Inhalt Pelletsbehälter"
+// 264/10891/0/0/12013 name="Verbrauch seit Aschebox leeren"
+// 264/10891/0/0/19402 name="Kessel"
+// 264/10201/0/11029/2102 name="Retourversuche"
+
+const xx = parseXML(response.body).children[0];
+
+var rr = "";
+var aa = "";
+var val = 0;
+const unitgrad = "°C";
+const unitmenge = "kg";
+
+var aussentemp = 0;
+var kollektortemp = 0;
+var kollektorzustand = 0;
+var kessel = 0;
+var fuehler1 = 0;
+var fuehler2 = 0;
+var fuehler3 = 0;
+var fuehler4 = 0;
+var vorrat = 0;
+var pelletsbehaelter = 0;
+var asche = 0;
+var retouren = 0;
+
+const ll = xx.children.length;
+for ( let i = 0; i < ll; i++ ) {
+  aa = xx.children[i].attributes.uri
+  val = xx.children[i].attributes.strValue
+  if (aa == "120/10221/0/0/12197") { aussentemp = val; }
+  if (aa == "120/10221/0/11139/0") { kollektortemp = val; }
+  if (aa == "120/10221/0/11139/2002") { kollektorzustand = val; }
+  if (aa == "264/10891/0/0/19402") { kessel = val; }
+
+  if (aa == "120/10601/0/11327/0") { fuehler1 = val; }
+  if (aa == "120/10601/0/11328/0") { fuehler2 = val; }
+  if (aa == "120/10601/0/11329/0") { fuehler3 = val; }
+  if (aa == "120/10601/0/11330/0") { fuehler4 = val; }
+
+  if (aa == "264/10201/0/0/12015") { vorrat = val; }
+  if (aa == "264/10891/0/0/12011") { pelletsbehaelter = val; }
+  if (aa == "264/10891/0/0/12013") { asche = val; }
+  if (aa == "264/10201/0/11029/2102") { retouren = val; }
+  // rr += aa + "\n";
+}
+
+rr  = "Kollektorstatus: " + kollektorzustand + "\n";
+rr += "Kollektortemp:   " + kollektortemp + unitgrad + "\n";
+rr += "Außentemp:       " + aussentemp + unitgrad + "\n";
+rr += "\n";
+rr += "Lagerstand:      " + vorrat + unitmenge + "\n";
+rr += "Pelletsbehälter:      " + pelletsbehaelter + unitmenge + "\n";
+rr += "GESAMTMENGE:      " + (parseInt(vorrat) + parseInt(pelletsbehaelter)) + unitmenge + "\n";
+rr += "\nKessel: " + kessel + "\n";
+rr += "Asche: " + asche + unitmenge + "\n";
+rr += "Retouren: " + retouren + " / Versuche: " + 0 + "\n";
+rr += "\nPuffer:\n";
+rr += "Fühler 1:      " + fuehler1 + unitgrad + "\n";
+rr += "Fühler 2:      " + fuehler2 + unitgrad + "\n";
+rr += "Fühler 3:      " + fuehler3 + unitgrad + "\n";
+rr += "Fühler 4:      " + fuehler4 + unitgrad + ""; 
+
+
+showDialog(rr, "Heizung");
