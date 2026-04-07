@@ -3,6 +3,7 @@
 // 120/10221/0/0/12197 name="Außentemperatur"
 // 120/10221/0/11139/0 name="Kollektor"
 // 120/10221/0/11139/2002 name="Kollektorzustand"
+// 120/10221/0/0/19408 name="Solaranlage"
 // 120/10601/0/11327/0 name="Fühler 1 (oben)"
 // 120/10601/0/11328/0 name="Fühler 2"
 // 120/10601/0/11329/0 name="Fühler 3"
@@ -24,6 +25,7 @@ const unitmenge = "kg";
 var aussentemp = 0;
 var kollektortemp = 0;
 var kollektorzustand = 0;
+var solaranlage = 0;
 var kessel = 0;
 var fuehler1 = 0;
 var fuehler2 = 0;
@@ -41,6 +43,7 @@ for ( let i = 0; i < ll; i++ ) {
   if (aa == "120/10221/0/0/12197") { aussentemp = val; }
   if (aa == "120/10221/0/11139/0") { kollektortemp = val; }
   if (aa == "120/10221/0/11139/2002") { kollektorzustand = val; }
+  if (aa == "120/10221/0/0/19408") { solaranlage = val; }
   if (aa == "264/10891/0/0/19402") { kessel = val; }
 
   if (aa == "120/10601/0/11327/0") { fuehler1 = val; }
@@ -56,6 +59,7 @@ for ( let i = 0; i < ll; i++ ) {
 }
 
 rr  = "Kollektorstatus: " + kollektorzustand + "\n";
+rr += "Solaranlage: " + solaranlage + "\n";
 rr += "Kollektortemp:   " + kollektortemp + unitgrad + "\n";
 rr += "Außentemp:       " + aussentemp + unitgrad + "\n";
 rr += "\n";
