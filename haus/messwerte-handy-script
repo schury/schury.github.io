@@ -13,6 +13,7 @@
 // 264/10891/0/0/12013 name="Verbrauch seit Aschebox leeren"
 // 264/10891/0/0/19402 name="Kessel"
 // 264/10201/0/11029/2102 name="Retourversuche"
+// 120/10221/0/0/19391 name="Ergänzung" (Status Kollektor)
 
 const xx = parseXML(response.body).children[0];
 
@@ -35,6 +36,7 @@ var vorrat = 0;
 var pelletsbehaelter = 0;
 var asche = 0;
 var retouren = 0;
+var ergaenzung = 0;
 
 const ll = xx.children.length;
 for ( let i = 0; i < ll; i++ ) {
@@ -55,11 +57,13 @@ for ( let i = 0; i < ll; i++ ) {
   if (aa == "264/10891/0/0/12011") { pelletsbehaelter = val; }
   if (aa == "264/10891/0/0/12013") { asche = val; }
   if (aa == "264/10201/0/11029/2102") { retouren = val; }
+  if (aa == "120/10221/0/0/19391") { ergaenzung = val; }
   // rr += aa + "\n";
 }
 
 rr  = "Kollektorstatus: " + kollektorzustand + "\n";
 rr += "Solaranlage: " + solaranlage + "\n";
+rr += "Ergänzung: " + ergaenzung + "\n";
 rr += "Kollektortemp:   " + kollektortemp + unitgrad + "\n";
 rr += "Außentemp:       " + aussentemp + unitgrad + "\n";
 rr += "\n";
