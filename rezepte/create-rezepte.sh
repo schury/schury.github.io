@@ -76,8 +76,6 @@ for infile in infiles:
     rez_html_out.write('<h2>Kuchen</h2>\n')
 
   for line in contents.split('\n'):
-    if line == '':
-      continue
     if line == 'REZEPT':
       newrecipe = True
       if title != '':
@@ -90,19 +88,24 @@ for infile in infiles:
         zutaten = []
         zubereitung = []
       continue
+
     if newrecipe:
       title = line
       newrecipe = False
       continue
+
     if line == 'Zutaten': 
       mode = 'Zutaten'
       continue
     if line == 'Zubereitung': 
       mode = 'Zubereitung'
       continue
+
     if mode == 'Zutaten':
       zutaten.append(line)
     if mode == 'Zubereitung':
+      if line == '':
+        continue
       zubereitung.append(line)
    
   rez_num += 1
