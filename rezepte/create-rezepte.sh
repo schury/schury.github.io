@@ -72,6 +72,9 @@ for infile in infiles:
     rez_html_out.write('<h2>Beilagen</h2>\n')
   if 'nachspeisen' in infile:
     rez_html_out.write('<h2>Nachspeisen</h2>\n')
+  if 'kuchen' in infile:
+    rez_html_out.write('<h2>Kuchen</h2>\n')
+
   for line in contents.split('\n'):
     if line == '':
       continue
