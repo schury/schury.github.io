@@ -53,7 +53,7 @@ zutaten = []
 zubereitung = []
 rez_num = 0
 
-infiles = ['hauptgerichte.txt', 'beilagen.txt', 'nachspeisen.txt']
+infiles = ['hauptgerichte.txt', 'beilagen.txt', 'nachspeisen.txt', 'kuchen.txt']
 
 mode = 'zutaten'
 newrecipe = False
