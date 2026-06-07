@@ -87,10 +87,13 @@ Linsenbrot
 Zutaten
 500g Linsen
 2 TL Salz
-etwas Tomatenmark
-1 TL Backpulver
-evtl. Röstzwiebeln
-evtl. Sonnenblumenkerne
+V2: 250g Wasser
+V2: Sonnenblumenkerne
+V2: 1 Pkg Backpulver
+V2: 1 geriebene Karotte
+V1: Röstzwiebeln
+V1: etwas Tomatenmark
+V1: 1 TL Backpulver
 Gewürze nach Geschmack
 Zubereitung
 Linsen in Wasser mehrere Stunden (ggf. über Nacht) einweichen.
