@@ -16,7 +16,7 @@ if test:
   outstring = f.readline()
 else:
   dateStart = str(datetime.today().year) + '-01-01'
-  dateEnd   = '2025-12-31'
+  dateEnd   = '2026-05-31'
   dateEnd   = datetime.today().strftime('%Y-%m-%d')
 
   infile = open("../../se-api-key", "r")
