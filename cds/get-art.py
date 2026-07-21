@@ -47,10 +47,11 @@ artist_cd_list = []
 searchstring = artist.replace(' ', '+').replace('ö', 'o').replace('ÿ', 'y')
 with urllib.request.urlopen('https://musicbrainz.org/search?query=' + searchstring + '&type=artist&limit=1&method=indexed') as artist_list:
   html_artist = str(artist_list.read()).split('\"')
+  print(html_artist)
   for h in html_artist: 
     if '/artist/' in h:
       artist_id = (h.split('/')[2])
-      # print(artist_id)
+      print(artist_id)
       temp = ''
       with urllib.request.urlopen('https://musicbrainz.org/artist/' + artist_id) as cd_list:
         html_cds = str(cd_list.read()).split('\"')
