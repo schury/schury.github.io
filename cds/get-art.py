@@ -1,31 +1,10 @@
 #!/usr/bin/python3
-from requests_html import HTMLSession
 
-import urllib.request, sys, os
+
+import musicbrainzngs
+import urllib.request
 from urllib.error import HTTPError, URLError
-from time import sleep
-
-from PIL import Image
-import PIL
-
-# creating a image object (main image)
-# im1 = Image.open(r"C:\Users\System-Pc\Desktop\flower1.jpg")
-
-# save a image using extension
-# im1 = im1.save("geeks.jpg")
-def download_and_save_art(rg_id, filename):
-  url = 'https://coverartarchive.org' + rg_id + '/front'
-
-  try:
-    with urllib.request.urlopen(url) as img:
-      # print(img)
-      with open(filename, 'wb') as outfile:
-        outfile.write(img.read())
-      # bla = Image(img).save('test.jpg')
-  except HTTPError as error:
-    print('no image file')
-
-
+import sys, os
 
 if len(sys.argv) < 3:
   print('not enough arguments')
@@ -33,82 +12,59 @@ if len(sys.argv) < 3:
   print('Argument 2: Album')
   sys.exit()
 
-artist = sys.argv[1].lower()
-album  = sys.argv[2].lower()
+s_artist = sys.argv[1].lower()
+s_album  = sys.argv[2].lower()
 
-#artist = 'Witchery'
-#album =  'Nightside'
+musicbrainzngs.set_useragent(
+    'python-musicbrainzngs-example',
+    '0.1',
+    'https://github.com/alastair/python-musicbrainzngs/',
+)
 
-filename = 'albumart/' + artist.lower().replace(' ', '_') + '_' + album.lower().replace(' ', '_') + '.jpg'
+result = musicbrainzngs.search_artists(artist=s_artist, type='artist')
+#for artist in result['artist-list']:
+#    print(u"{id}: {name}".format(id=artist['id'], name=artist["name"]))
 
-if os.path.isfile(filename):
-  print(filename + ' already downloaded, skipping!')
-  sys.exit()
+artist = result['artist-list'][0]
+print(u"Found artist!      {id}: {name}".format(id=artist['id'], name=artist['name']))
 
-artist_cd_list = []
-searchstring = artist.replace(' ', '+').replace('ö', 'o').replace('ÿ', 'y')
-with urllib.request.urlopen('https://musicbrainz.org/search?query=' + searchstring + '&type=artist&limit=1&method=indexed') as artist_list:
-  html_artist = str(artist_list.read()).split('\"')
-  # print(html_artist)
 
-  for h in html_artist: 
-    if '/artist/' in h:
-      artist_id = (h.split('/')[2])
-      print("artist_id: " + artist_id)
-      temp = ''
-
-      cd_list = []
-      while not cd_list:
-        try: 
-          print("try")
-          cd_list =  urllib.request.urlopen('https://musicbrainz.org/artist/' + artist_id)
-          print(cd_list.status)
-          print(cd_list.headers)
-          print(cd_list.read()) 
-          import requests
-        except HTTPError as error:
-          print('error in webcall to musicbrainz - artist')
-        sleep(1)
-
-      html_cds = str(cd_list.read()).split('\"')
-      print_next = False
-      for c in html_cds:
-        if print_next:
-          print_next = False
-          s = c.replace('><bdi>', '')
-          s = s[0:s.find('<')]
-          s = s.replace('\\xe2\\x80\\xa6', '...')
-          s = s.replace('\\xe2\\x80\\x93', '-')
-          s = s.replace('\\303\\244', 'ä')
-          s = s.replace('\\303\\266', 'ö')
-          s = s.replace('\\xc3\\xa4', 'ä')
-          s = s.replace('\\xc3\\xb6', 'ö')
-          s = s.replace('\\xc3\\xbc', 'ü')
-          s = s.replace('&amp;', '&')
-          s = s.replace('&#x27;', "'")
-          s = s.replace('\\xe2\\x80\\x99' , "’")
-          artist_cd_list.append(temp + ' ' + s.lower())
-          temp = ''
-        if ('/release-group/' in c) and not ('http' in c):
-          temp = c
-          print_next = True
+result = musicbrainzngs.get_artist_by_id(artist['id'],
+              includes=["release-groups"], release_type=["album", "ep"])
+rg_id = ""
+for release_group in result["artist"]["release-group-list"]:
+  # print(release_group["title"])
+  if s_album == release_group["title"].lower():
+    print("Found album!       {title} ({type})".format(title=release_group["title"],
+                                    type=release_group["type"]))
+    # print(release_group)
+    rg_id = release_group['id']
 
 
 
-print(artist_cd_list)
 
-# should check the file on the disk first, only then try to download again!
-album_found = False
-for c in artist_cd_list:
-  if album in c:
-    print('found album ' + album + ' of artist ' + artist + ' in cd-list!')
-    rg_id = c.split()[0]
-    print(rg_id + ' ----- ' + filename)
-    album_found = True
-    if not os.path.isfile(filename):
-      print(' downloading file...')
-      download_and_save_art(rg_id, filename)
+images = musicbrainzngs.get_release_group_image_list(rg_id)
 
-if not album_found:
-  print('    -----> ' + artist + ' ' + album + ' not found')
+url = ''
+candidate = []
+for im in images['images']:
+  # print(im['approved'])
+  print('Image - front: ' + str(im['front']) + '  ---- url: ' + im['image'])
+  if str(im['front']) == 'True':
+    candidate.append(im['image'])
+  if not url:
+    url = im['image']
 
+if candidate is not []:
+  print(candidate)
+  url = candidate[0]
+
+# try:
+  # with urllib.request.urlopen(url) as img:
+    # with open(filename, 'wb') as outfile:
+      # outfile.write(img.read())
+# except HTTPError as error:
+  # print('no image file')
+
+outfile = s_artist.lower().replace(' ', '_') + '_' + s_album.lower().replace(' ', '_') + '.jpg'
+os.system('wget -nv -O ' + outfile + ' ' + url)

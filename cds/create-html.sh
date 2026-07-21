@@ -68,7 +68,7 @@ def write_songs_to_file(num, artist, album, year, songs, album_length):
     m = artist.lower() + ' - ' + album.lower()
     missing_covers.append(m)
     print('Trying do download missing cover for ' + m)
-    os.system('./ggggg.py "' + artist + '" "' + album + '"')
+    os.system('./get-art.py "' + artist + '" "' + album + '"')
   outfile.write('</body>\n')
 
 outfilename = "index.html"
