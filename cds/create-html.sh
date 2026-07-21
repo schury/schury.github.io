@@ -128,6 +128,7 @@ outfile.write('</body>\n')
 
 print('found ' + str(covers_found) + ' covers')
 
-print('')
-print('Missing Covers:')
-print('\n'.join(missing_covers))
+if missing_covers:
+  print('')
+  print('Missing Covers:')
+  print('\n'.join(missing_covers))
