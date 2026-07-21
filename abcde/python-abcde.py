@@ -99,11 +99,17 @@ def call_cdparanoia(num_tracks):
 # -l log to cdparanoia.log
 # -q quiet
 # -Z disable paranoia - for scratched cds
+# -Y only cdda2wav-style overlap checking (no extra-paranoia)
+# -z <num> limit number of retries when reading faulty sectors
+  command = '/usr/bin/cdparanoia -B -l -q -Y'
   command = '/usr/bin/cdparanoia -B -l -q -Z'
   command = '/usr/bin/cdparanoia -B -l -q'
+  command = '/usr/bin/cdparanoia -B -l -q -z=2'
   if Debug:
-    print("cdparanoia command:")
-    print(command)
+    print("cdparanoia command:" + command)
+
+  # output file name is like this: track01.cdda.wav
+
   pid = subprocess.Popen(command, shell=True).pid
   print('Extraction progress:')
   while psutil.pid_exists(pid):
@@ -314,7 +320,7 @@ def query_cddb_and_select_result(disc_id):
 # step 2: read
 #   read needs only the discid and the genre
 # to_check: if the result is unique, we directly receive the read result?
-  query = 'https://gnudb.gnudb.org/~cddb/cddb.cgi?cmd=cddb+query+' + disc_id.replace(' ', '+') + '&hello=misty+yahoo.com+selfmade+0.1&proto=6'
+  query = 'http://gnudb.gnudb.org/~cddb/cddb.cgi?cmd=cddb+query+' + disc_id.replace(' ', '+') + '&hello=misty+yahoo.com+selfmade+0.1&proto=6'
   if Debug:
     print("query command:")
     print(query)
@@ -347,13 +353,16 @@ def query_cddb_and_select_result(disc_id):
     cd_category = s[cd_cat_index]
     cd_id       = s[cd_id_index]
 
-    query2 = 'https://gnudb.gnudb.org/~cddb/cddb.cgi?cmd=cddb+read+' + cd_category + '+' + cd_id + '&hello=misty+yahoo.com+selfmade+0.1&proto=6'
+    query2 = 'http://gnudb.gnudb.org/~cddb/cddb.cgi?cmd=cddb+read+' + cd_category + '+' + cd_id + '&hello=misty+yahoo.com+selfmade+0.1&proto=6'
+    if Debug:
+      print("  query2: " + query2)
     cddb_read = requests.get(query2).text
     cddb_read = parse_and_print_cddb_result(cddb_read)
     cddb_results.append(cddb_read)
     if Debug:
       print("  cddb_read result:")
-      print(cddb_read)
+    ##### FSFSFS: testing because results are not printed
+    print(cddb_read)
 
 # find the separator '/' in the list of tokens
 # use it later for artist and title separation
