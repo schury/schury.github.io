@@ -12,6 +12,8 @@ song_list = []
 
 covers_found = 0
 
+missing_covers = []
+
 def write_cd_header(file):
   header = '''<!DOCTYPE html>
 <html lang="en">
@@ -62,7 +64,11 @@ def write_songs_to_file(num, artist, album, year, songs, album_length):
     outfile.write('<img src="../' + art_filename + '" alt="cover not found" />\n')
     covers_found += 1
   else:
-    print(art_filename + ' cover not found')
+    # print(art_filename + ' cover not found')
+    m = artist.lower() + ' - ' + album.lower()
+    missing_covers.append(m)
+    print('Trying do download missing cover for ' + m)
+    os.system('./ggggg.py "' + artist + '" "' + album + '"')
   outfile.write('</body>\n')
 
 outfilename = "index.html"
@@ -121,3 +127,7 @@ outfile.write('Created: ' + str(date.today()) + '\n')
 outfile.write('</body>\n')
 
 print('found ' + str(covers_found) + ' covers')
+
+print('')
+print('Missing Covers:')
+print('\n'.join(missing_covers))

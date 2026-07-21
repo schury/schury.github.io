@@ -1,7 +1,9 @@
 #!/usr/bin/python3
+from requests_html import HTMLSession
 
 import urllib.request, sys, os
 from urllib.error import HTTPError, URLError
+from time import sleep
 
 from PIL import Image
 import PIL
@@ -47,35 +49,49 @@ artist_cd_list = []
 searchstring = artist.replace(' ', '+').replace('ö', 'o').replace('ÿ', 'y')
 with urllib.request.urlopen('https://musicbrainz.org/search?query=' + searchstring + '&type=artist&limit=1&method=indexed') as artist_list:
   html_artist = str(artist_list.read()).split('\"')
-  print(html_artist)
+  # print(html_artist)
+
   for h in html_artist: 
     if '/artist/' in h:
       artist_id = (h.split('/')[2])
-      print(artist_id)
+      print("artist_id: " + artist_id)
       temp = ''
-      with urllib.request.urlopen('https://musicbrainz.org/artist/' + artist_id) as cd_list:
-        html_cds = str(cd_list.read()).split('\"')
-        print_next = False
-        for c in html_cds:
-          if print_next:
-            print_next = False
-            s = c.replace('><bdi>', '')
-            s = s[0:s.find('<')]
-            s = s.replace('\\xe2\\x80\\xa6', '...')
-            s = s.replace('\\xe2\\x80\\x93', '-')
-            s = s.replace('\\303\\244', 'ä')
-            s = s.replace('\\303\\266', 'ö')
-            s = s.replace('\\xc3\\xa4', 'ä')
-            s = s.replace('\\xc3\\xb6', 'ö')
-            s = s.replace('\\xc3\\xbc', 'ü')
-            s = s.replace('&amp;', '&')
-            s = s.replace('&#x27;', "'")
-            s = s.replace('\\xe2\\x80\\x99' , "’")
-            artist_cd_list.append(temp + ' ' + s.lower())
-            temp = ''
-          if ('/release-group/' in c) and not ('http' in c):
-            temp = c
-            print_next = True
+
+      cd_list = []
+      while not cd_list:
+        try: 
+          print("try")
+          cd_list =  urllib.request.urlopen('https://musicbrainz.org/artist/' + artist_id)
+          print(cd_list.status)
+          print(cd_list.headers)
+          print(cd_list.read()) 
+          import requests
+        except HTTPError as error:
+          print('error in webcall to musicbrainz - artist')
+        sleep(1)
+
+      html_cds = str(cd_list.read()).split('\"')
+      print_next = False
+      for c in html_cds:
+        if print_next:
+          print_next = False
+          s = c.replace('><bdi>', '')
+          s = s[0:s.find('<')]
+          s = s.replace('\\xe2\\x80\\xa6', '...')
+          s = s.replace('\\xe2\\x80\\x93', '-')
+          s = s.replace('\\303\\244', 'ä')
+          s = s.replace('\\303\\266', 'ö')
+          s = s.replace('\\xc3\\xa4', 'ä')
+          s = s.replace('\\xc3\\xb6', 'ö')
+          s = s.replace('\\xc3\\xbc', 'ü')
+          s = s.replace('&amp;', '&')
+          s = s.replace('&#x27;', "'")
+          s = s.replace('\\xe2\\x80\\x99' , "’")
+          artist_cd_list.append(temp + ' ' + s.lower())
+          temp = ''
+        if ('/release-group/' in c) and not ('http' in c):
+          temp = c
+          print_next = True
 
 
 
