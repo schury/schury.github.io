@@ -59,6 +59,11 @@ if candidate is not []:
   print(candidate)
   url = candidate[0]
 
+outfile = s_artist.lower().replace(' ', '_') + '_' + s_album.lower().replace(' ', '_') + '.jpg'
+os.system('wget -nv -O ' + outfile + ' ' + url)
+
+
+# alternative with python doesn't work anymore...?
 # try:
   # with urllib.request.urlopen(url) as img:
     # with open(filename, 'wb') as outfile:
@@ -66,5 +71,14 @@ if candidate is not []:
 # except HTTPError as error:
   # print('no image file')
 
-outfile = s_artist.lower().replace(' ', '_') + '_' + s_album.lower().replace(' ', '_') + '.jpg'
-os.system('wget -nv -O ' + outfile + ' ' + url)
+
+# llm says, this should work...?
+#import urllib.request
+#import shutil
+
+#url = 'https://example.com/image.jpg'
+#filename = 'downloaded_image.jpg'
+
+#with urllib.request.urlopen(url) as response, open(filename, 'wb') as out_file:
+    #shutil.copyfileobj(response, out_file)
+
